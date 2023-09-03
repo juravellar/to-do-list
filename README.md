@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  
 <h1 align="center">
   To do List
@@ -75,3 +76,7 @@ docker run --name place-service -p 8080:8080  -d place-service:0.0.1-SNAPSHOT
 
 A API poderá ser acessada em [localhost:8080](http://localhost:8080).
 O Swagger poderá ser visualizado em [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+=======
+# to-do-list
+API criada com STS que gerencia tarefas
+>>>>>>> 906d0db48916b0b69a7d70001384152a51612df2
