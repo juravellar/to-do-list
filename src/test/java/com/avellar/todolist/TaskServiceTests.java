@@ -15,30 +15,34 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @Import(TestConfig.class)
 public class TaskServiceTests {
     public static final Task ORGANIZAR_ARMARIO = new Task(
-            1L, "Organizar armario", "organizar-armario", "tirar poeira",false, true);
+            1L, "Valid Name", "Organizar armario", false, false, null, null);
 
     @Autowired
     WebTestClient webTestClient;
+    @Autowired
+    TaskRepository taskRepository;
 
     @Test
     public void testCreateTaskSuccess() {
         final String name = "Valid Name";
         final String description = "Valid Description";
-        final String slug = "valid-name";
+        final Boolean prioritized = false;
+        final Boolean realized = false;
 
         webTestClient
                 .post()
                 .uri("/tasks")
                 .bodyValue(
-                        new TaskRequest(name, description, null, null))
+                        new TaskRequest(name, description, realized, prioritized))
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("name").isEqualTo(name)
                 .jsonPath("description").isEqualTo(description)
-                .jsonPath("slug").isEqualTo(slug)
-                .jsonPath("done").isNotEmpty()
-                .jsonPath("preference").isNotEmpty();
+                .jsonPath("prioritized").isEqualTo(prioritized)
+                .jsonPath("realized").isEqualTo(realized)
+                .jsonPath("createdAt").isNotEmpty()
+                .jsonPath("updatedAt").isNotEmpty();
     }
 
     @Test
@@ -57,25 +61,26 @@ public class TaskServiceTests {
 
     @Test
     public void testEditTaskSuccess() {
-        final String newName = "New Name";
+        final String newName = "Valid Name";
         final String newDescription = "New Description";
-        final String newSlug = "new-name";
+        final Boolean newPrioritized = true;
+        final Boolean newRealized = true;
 
         webTestClient
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(newName, newDescription, null, null))
+                        new TaskRequest(newName, newDescription, newPrioritized, newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("name").isEqualTo(newName)
                 .jsonPath("description").isEqualTo(newDescription)
-                .jsonPath("slug").isEqualTo(newSlug)
-                .jsonPath("done").isNotEmpty()
-                .jsonPath("preference").isNotEmpty();
+                .jsonPath("prioritized").isEqualTo(newPrioritized)
+                .jsonPath("realized").isEqualTo(newRealized)
+                .jsonPath("createdAt").isNotEmpty()
+                .jsonPath("updatedAt").isNotEmpty();
 
-        // Updates only name
         webTestClient
                 .patch()
                 .uri("/tasks/1")
@@ -86,11 +91,9 @@ public class TaskServiceTests {
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(newDescription)
-                .jsonPath("slug").isEqualTo(ORGANIZAR_ARMARIO.slug())
-                .jsonPath("done").isNotEmpty()
-                .jsonPath("preference").isNotEmpty();
+                .jsonPath("createdAt").isNotEmpty()
+                .jsonPath("updatedAt").isNotEmpty();
 
-        // Updates only city
         webTestClient
                 .patch()
                 .uri("/tasks/1")
@@ -101,38 +104,37 @@ public class TaskServiceTests {
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("slug").isEqualTo(ORGANIZAR_ARMARIO.slug())
-                .jsonPath("done").isNotEmpty()
-                .jsonPath("preference").isNotEmpty();
-
-        // Updates only state
-        webTestClient
-                .patch()
-                .uri("/tasks/1")
-                .bodyValue(
-                        new TaskRequest(null, null, false,  null))
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
-                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("slug").isEqualTo(ORGANIZAR_ARMARIO.slug())
-                .jsonPath("done").isNotEmpty()
-                .jsonPath("preference").isNotEmpty();
+                .jsonPath("createdAt").isNotEmpty()
+                .jsonPath("updatedAt").isNotEmpty();
 
         webTestClient
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(null, null, null,  true))
+                        new TaskRequest(null, null, null, ORGANIZAR_ARMARIO.prioritized()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("slug").isEqualTo(ORGANIZAR_ARMARIO.slug())
-                .jsonPath("done").isNotEmpty()
-                .jsonPath("preference").isNotEmpty();
+                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
+                .jsonPath("createdAt").isNotEmpty()
+                .jsonPath("updatedAt").isNotEmpty();
+
+        webTestClient
+                .patch()
+                .uri("/tasks/1")
+                .bodyValue(
+                        new TaskRequest(null, null, ORGANIZAR_ARMARIO.realized(),  null))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
+                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
+                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
+                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
+                .jsonPath("createdAt").isNotEmpty()
+                .jsonPath("updatedAt").isNotEmpty();
     }
 
     @Test
@@ -145,16 +147,17 @@ public class TaskServiceTests {
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("slug").isEqualTo(ORGANIZAR_ARMARIO.slug())
-                .jsonPath("done").isNotEmpty()
-                .jsonPath("preference").isNotEmpty();
+                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
+                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
+                .jsonPath("createdAt").isNotEmpty()
+                .jsonPath("updatedAt").isNotEmpty();
     }
 
     @Test
     public void testGetFailure() {
         webTestClient
                 .get()
-                .uri("/tasks/1")
+                .uri("/tasks/11")
                 .exchange()
                 .expectStatus().isNotFound();
     }
@@ -169,27 +172,29 @@ public class TaskServiceTests {
                 .expectBody()
                 .jsonPath("$").isArray()
                 .jsonPath("$[0].name").isEqualTo(ORGANIZAR_ARMARIO.name())
-                .jsonPath("$[0].slug").isEqualTo(ORGANIZAR_ARMARIO.slug())
                 .jsonPath("$[0].description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("$[0].done").isNotEmpty()
-                .jsonPath("$[0].preference").isNotEmpty();
+                .jsonPath("$[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
+                .jsonPath("$[0].realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
+                .jsonPath("$[0].createdAt").isNotEmpty()
+                .jsonPath("$[0].updatedAt").isNotEmpty();
     }
 
     @Test
     public void testListByNameSuccess() {
         webTestClient
                 .get()
-                .uri("/places?name=%s".formatted(ORGANIZAR_ARMARIO.name()))
+                .uri("/tasks?name=%s".formatted(ORGANIZAR_ARMARIO.name()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$").isArray()
                 .jsonPath("$.length()").isEqualTo(1)
                 .jsonPath("$[0].name").isEqualTo(ORGANIZAR_ARMARIO.name())
-                .jsonPath("$[0].slug").isEqualTo(ORGANIZAR_ARMARIO.slug())
                 .jsonPath("$[0].description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("$[0].done").isNotEmpty()
-                .jsonPath("$[0].preference").isNotEmpty();
+                .jsonPath("$[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
+                .jsonPath("$[0].realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
+                .jsonPath("$[0].createdAt").isNotEmpty()
+                .jsonPath("$[0].updatedAt").isNotEmpty();
     }
 
     @Test

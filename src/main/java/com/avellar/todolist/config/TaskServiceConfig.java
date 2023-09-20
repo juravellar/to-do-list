@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 
 @Configuration
-@EnableR2dbcAuditing // Para preencher o createdAt e updatedAt
+@EnableR2dbcAuditing
 public class TaskServiceConfig {
     @Bean
     TaskService taskService(TaskRepository taskRepository) {

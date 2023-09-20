@@ -19,13 +19,13 @@ public class TaskService {
 
     public Mono<Task> create(TaskRequest taskRequest) {
         var task = new Task(
-                null, taskRequest.name(), slg.slugify(taskRequest.name()), taskRequest.description(), taskRequest.done(), taskRequest.preference());
+                null, taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized(), null, null);
         return taskRepository.save(task);
     }
 
     public Mono<Task> edit(Long id, TaskRequest taskRequest) {
         return taskRepository.findById(id)
-                .map(task -> TaskMapper.updatePlaceFromDTO(taskRequest, task))
+                .map(task -> TaskMapper.updateTaskFromDTO(taskRequest, task))
                 .flatMap(taskRepository::save);
     }
 
@@ -34,7 +34,7 @@ public class TaskService {
     }
 
     public Flux<Task> list(String name) {
-        var task = new Task(null, name, null, null, null, null);
+        var task = new Task(null, name, null, null, null, null, null);
         Example<Task> query = QueryBuilder.makeQuery(task);
         return taskRepository.findAll(query, Sort.by("name").ascending());
     }
