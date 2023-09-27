@@ -26,8 +26,8 @@ public class TaskServiceTests {
     public void testCreateTaskSuccess() {
         final String name = "Valid Name";
         final String description = "Valid Description";
-        final Boolean prioritized = false;
         final Boolean realized = false;
+        final Boolean prioritized = false;
 
         webTestClient
                 .post()
