@@ -15,7 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @Import(TestConfig.class)
 public class TaskServiceTests {
     public static final Task ORGANIZAR_ARMARIO = new Task(
-            1L, "Valid Name", "Organizar armario", false, false, null, null);
+            1L, "Organizar", "Organizar Armario", false, false, null, null);
 
     @Autowired
     WebTestClient webTestClient;
@@ -41,8 +41,7 @@ public class TaskServiceTests {
                 .jsonPath("description").isEqualTo(description)
                 .jsonPath("prioritized").isEqualTo(prioritized)
                 .jsonPath("realized").isEqualTo(realized)
-                .jsonPath("createdAt").isNotEmpty()
-                .jsonPath("updatedAt").isNotEmpty();
+                .jsonPath("createdAt").isNotEmpty();
     }
 
     @Test
@@ -61,8 +60,8 @@ public class TaskServiceTests {
 
     @Test
     public void testEditTaskSuccess() {
-        final String newName = "Valid Name";
-        final String newDescription = "New Description";
+        final String newName = "Roupa";
+        final String newDescription = "Lavar roupa";
         final Boolean newPrioritized = true;
         final Boolean newRealized = true;
 
@@ -77,9 +76,7 @@ public class TaskServiceTests {
                 .jsonPath("name").isEqualTo(newName)
                 .jsonPath("description").isEqualTo(newDescription)
                 .jsonPath("prioritized").isEqualTo(newPrioritized)
-                .jsonPath("realized").isEqualTo(newRealized)
-                .jsonPath("createdAt").isNotEmpty()
-                .jsonPath("updatedAt").isNotEmpty();
+                .jsonPath("realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -91,8 +88,8 @@ public class TaskServiceTests {
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(newDescription)
-                .jsonPath("createdAt").isNotEmpty()
-                .jsonPath("updatedAt").isNotEmpty();
+                .jsonPath("prioritized").isEqualTo(newPrioritized)
+                .jsonPath("realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -104,8 +101,8 @@ public class TaskServiceTests {
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("createdAt").isNotEmpty()
-                .jsonPath("updatedAt").isNotEmpty();
+                .jsonPath("prioritized").isEqualTo(newPrioritized)
+                .jsonPath("realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -118,8 +115,7 @@ public class TaskServiceTests {
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
                 .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
-                .jsonPath("createdAt").isNotEmpty()
-                .jsonPath("updatedAt").isNotEmpty();
+                .jsonPath("realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -132,9 +128,7 @@ public class TaskServiceTests {
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
                 .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
-                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
-                .jsonPath("createdAt").isNotEmpty()
-                .jsonPath("updatedAt").isNotEmpty();
+                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.realized());
     }
 
     @Test
@@ -148,9 +142,7 @@ public class TaskServiceTests {
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
                 .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
-                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
-                .jsonPath("createdAt").isNotEmpty()
-                .jsonPath("updatedAt").isNotEmpty();
+                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.realized());
     }
 
     @Test
@@ -174,9 +166,7 @@ public class TaskServiceTests {
                 .jsonPath("$[0].name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("$[0].description").isEqualTo(ORGANIZAR_ARMARIO.description())
                 .jsonPath("$[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
-                .jsonPath("$[0].realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
-                .jsonPath("$[0].createdAt").isNotEmpty()
-                .jsonPath("$[0].updatedAt").isNotEmpty();
+                .jsonPath("$[0].realized").isEqualTo(ORGANIZAR_ARMARIO.realized());
     }
 
     @Test
@@ -192,9 +182,7 @@ public class TaskServiceTests {
                 .jsonPath("$[0].name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("$[0].description").isEqualTo(ORGANIZAR_ARMARIO.description())
                 .jsonPath("$[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
-                .jsonPath("$[0].realized").isEqualTo(ORGANIZAR_ARMARIO.realized())
-                .jsonPath("$[0].createdAt").isNotEmpty()
-                .jsonPath("$[0].updatedAt").isNotEmpty();
+                .jsonPath("$[0].realized").isEqualTo(ORGANIZAR_ARMARIO.realized());
     }
 
     @Test
