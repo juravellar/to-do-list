@@ -5,6 +5,7 @@ import com.avellar.todolist.api.TaskRequest;
 import com.avellar.todolist.domain.Task;
 import com.avellar.todolist.domain.TaskRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -82,7 +83,7 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(ORGANIZAR_ARMARIO.name(), null, null, null))
+                        new TaskRequest(ORGANIZAR_ARMARIO.name(), newDescription, newPrioritized, newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -95,7 +96,7 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(null, ORGANIZAR_ARMARIO.description(), null,  null))
+                        new TaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), newPrioritized,  newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -108,27 +109,27 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(null, null, null, ORGANIZAR_ARMARIO.prioritized()))
+                        new TaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), ORGANIZAR_ARMARIO.prioritized(), newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
+                .jsonPath("prioritized").isEqualTo(newPrioritized)
                 .jsonPath("realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(null, null, ORGANIZAR_ARMARIO.realized(),  null))
+                        new TaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), ORGANIZAR_ARMARIO.realized(),  ORGANIZAR_ARMARIO.prioritized()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.name())
                 .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.description())
-                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.prioritized())
-                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.realized());
+                .jsonPath("prioritized").isEqualTo(newPrioritized)
+                .jsonPath("realized").isEqualTo(newRealized);
     }
 
     @Test
