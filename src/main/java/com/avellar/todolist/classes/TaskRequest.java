@@ -1,4 +1,4 @@
-package com.avellar.todolist.api;
+package com.avellar.todolist.classes;
 
 import jakarta.validation.constraints.NotBlank;
 

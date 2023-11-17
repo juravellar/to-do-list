@@ -1,6 +1,6 @@
-package com.avellar.todolist.util;
+package com.avellar.todolist.classes;
 
-import com.avellar.todolist.domain.Task;
+import com.avellar.todolist.domain.entity.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 

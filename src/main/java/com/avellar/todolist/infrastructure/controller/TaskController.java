@@ -1,9 +1,9 @@
-package com.avellar.todolist.web;
+package com.avellar.todolist.infrastructure.controller;
 
-import com.avellar.todolist.api.TaskRequest;
-import com.avellar.todolist.api.TaskResponse;
-import com.avellar.todolist.domain.TaskMapper;
-import com.avellar.todolist.domain.TaskService;
+import com.avellar.todolist.application.usecases.CreateTaskInterector;
+import com.avellar.todolist.classes.TaskMapper;
+import com.avellar.todolist.classes.TaskRequest;
+import com.avellar.todolist.classes.TaskResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,29 +16,29 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/tasks")
 public class TaskController {
     @Autowired
-    private TaskService taskService;
+    private CreateTaskInterector createTaskInterector;
 
     @PostMapping
     public ResponseEntity<Mono<TaskResponse>> create(@Valid @RequestBody TaskRequest request) {
-        var taskResponse = taskService.create(request).map(TaskMapper::toResponse);
+        var taskResponse = createTaskInterector.create(request).map(TaskMapper::toResponse);
         return ResponseEntity.status(HttpStatus.CREATED).body(taskResponse);
     }
 
     @PatchMapping("{id}")
     public Mono<TaskResponse> edit(@PathVariable("id") Long id, @RequestBody TaskRequest request) {
-        return taskService.edit(id, request).map(TaskMapper::toResponse);
+        return createTaskInterector.edit(id, request).map(TaskMapper::toResponse);
     }
 
     @GetMapping("{id}")
     public Mono<ResponseEntity<TaskResponse>> get(@PathVariable("id") Long id) {
-        return taskService.get(id)
+        return createTaskInterector.get(id)
                 .map(task -> ResponseEntity.ok(TaskMapper.toResponse(task)))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @GetMapping
     public Flux<TaskResponse> list(@RequestParam(required = false) String name) {
-        return taskService.list(name).map(TaskMapper::toResponse);
+        return createTaskInterector.list(name).map(TaskMapper::toResponse);
     }
 
 

@@ -1,7 +1,10 @@
-package com.avellar.todolist.domain;
+package com.avellar.todolist.service;
 
-import com.avellar.todolist.api.TaskRequest;
-import com.avellar.todolist.util.QueryBuilder;
+import com.avellar.todolist.classes.TaskRequest;
+import com.avellar.todolist.classes.TaskMapper;
+import com.avellar.todolist.model.Task;
+import com.avellar.todolist.repository.TaskRepository;
+import com.avellar.todolist.classes.QueryBuilder;
 import com.github.slugify.Slugify;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;

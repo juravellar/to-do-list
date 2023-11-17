@@ -1,11 +1,11 @@
 package com.avellar.todolist;
 
 
-import com.avellar.todolist.api.TaskRequest;
-import com.avellar.todolist.domain.Task;
-import com.avellar.todolist.domain.TaskRepository;
+import com.avellar.todolist.classes.TaskRequest;
+import com.avellar.todolist.;
+import com.avellar.todolist.infrastructure.persistence.TaskEntity;
+import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -15,7 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(TestConfig.class)
 public class TaskServiceTests {
-    public static final Task ORGANIZAR_ARMARIO = new Task(
+    public static final TaskEntity ORGANIZAR_ARMARIO = new TaskEntity(
             1L, "Organizar", "Organizar Armario", false, false, null, null);
 
     @Autowired

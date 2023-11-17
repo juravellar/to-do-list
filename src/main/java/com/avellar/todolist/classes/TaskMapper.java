@@ -1,7 +1,8 @@
-package com.avellar.todolist.domain;
+package com.avellar.todolist.classes;
 
-import com.avellar.todolist.api.TaskRequest;
-import com.avellar.todolist.api.TaskResponse;
+import com.avellar.todolist.classes.TaskRequest;
+import com.avellar.todolist.classes.TaskResponse;
+import com.avellar.todolist.model.Task;
 import org.springframework.util.StringUtils;
 
 public class TaskMapper {
