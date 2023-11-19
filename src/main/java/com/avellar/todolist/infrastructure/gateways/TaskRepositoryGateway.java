@@ -5,11 +5,11 @@ import com.avellar.todolist.domain.entity.Task;
 import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 
-public class UserRepositoryGateway implements TaskGateway {
+public class TaskRepositoryGateway implements TaskGateway {
     private final TaskRepository taskRepository;
     private final TaskEntityMapper taskEntityMapper;
 
-    public UserRepositoryGateway(TaskRepository taskRepository, TaskEntityMapper taskEntityMapper) {
+    public TaskRepositoryGateway(TaskRepository taskRepository, TaskEntityMapper taskEntityMapper) {
         this.taskRepository = taskRepository;
         this.taskEntityMapper = taskEntityMapper;
     }
