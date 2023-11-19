@@ -1,8 +1,8 @@
 package com.avellar.todolist;
 
 
-import com.avellar.todolist.classes.TaskRequest;
-import com.avellar.todolist.;
+import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
+;
 import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ public class TaskServiceTests {
                 .post()
                 .uri("/tasks")
                 .bodyValue(
-                        new TaskRequest(name, description, realized, prioritized))
+                        new CreateTaskRequest(name, description, realized, prioritized))
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
@@ -54,7 +54,7 @@ public class TaskServiceTests {
                 .post()
                 .uri("/tasks")
                 .bodyValue(
-                        new TaskRequest(name, description, null,null))
+                        new CreateTaskRequest(name, description, null,null))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
@@ -70,7 +70,7 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(newName, newDescription, newPrioritized, newRealized))
+                        new CreateTaskRequest(newName, newDescription, newPrioritized, newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -83,7 +83,7 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(ORGANIZAR_ARMARIO.name(), newDescription, newPrioritized, newRealized))
+                        new CreateTaskRequest(ORGANIZAR_ARMARIO.name(), newDescription, newPrioritized, newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -96,7 +96,7 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), newPrioritized,  newRealized))
+                        new CreateTaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), newPrioritized,  newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -109,7 +109,7 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), ORGANIZAR_ARMARIO.prioritized(), newRealized))
+                        new CreateTaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), ORGANIZAR_ARMARIO.prioritized(), newRealized))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -122,7 +122,7 @@ public class TaskServiceTests {
                 .patch()
                 .uri("/tasks/1")
                 .bodyValue(
-                        new TaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), ORGANIZAR_ARMARIO.realized(),  ORGANIZAR_ARMARIO.prioritized()))
+                        new CreateTaskRequest(ORGANIZAR_ARMARIO.name(), ORGANIZAR_ARMARIO.description(), ORGANIZAR_ARMARIO.realized(),  ORGANIZAR_ARMARIO.prioritized()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()

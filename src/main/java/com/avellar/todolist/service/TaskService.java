@@ -1,10 +1,10 @@
 package com.avellar.todolist.service;
 
-import com.avellar.todolist.classes.TaskRequest;
+import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
 import com.avellar.todolist.classes.TaskMapper;
-import com.avellar.todolist.model.Task;
-import com.avellar.todolist.repository.TaskRepository;
 import com.avellar.todolist.classes.QueryBuilder;
+import com.avellar.todolist.domain.entity.Task;
+import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import com.github.slugify.Slugify;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -20,13 +20,13 @@ public class TaskService {
         this.slg = Slugify.builder().build();
     }
 
-    public Mono<Task> create(TaskRequest taskRequest) {
+    public Mono<Task> create(CreateTaskRequest taskRequest) {
         var task = new Task(
                 null, taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized(), null, null);
         return taskRepository.save(task);
     }
 
-    public Mono<Task> edit(Long id, TaskRequest taskRequest) {
+    public Mono<Task> edit(Long id, CreateTaskRequest taskRequest) {
         return taskRepository.findById(id)
                 .map(task -> TaskMapper.updateTaskFromDTO(taskRequest, task))
                 .flatMap(taskRepository::save);
