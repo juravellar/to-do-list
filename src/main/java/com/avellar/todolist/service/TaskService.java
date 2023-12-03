@@ -4,6 +4,7 @@ import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
 import com.avellar.todolist.classes.TaskMapper;
 import com.avellar.todolist.classes.QueryBuilder;
 import com.avellar.todolist.domain.entity.Task;
+import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import com.github.slugify.Slugify;
 import org.springframework.data.domain.Example;
@@ -12,7 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class TaskService {
-    private final TaskRepository taskRepository;
+    private static TaskRepository taskRepository;
     private final Slugify slg;
 
     public TaskService(TaskRepository taskRepository) {
@@ -22,7 +23,7 @@ public class TaskService {
 
     public Mono<Task> create(CreateTaskRequest taskRequest) {
         var task = new Task(
-                null, taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized(), null, null);
+                taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized());
         return taskRepository.save(task);
     }
 
@@ -32,12 +33,12 @@ public class TaskService {
                 .flatMap(taskRepository::save);
     }
 
-    public Mono<Task> get(Long id) {
+    public Mono<TaskEntity> get(Long id) {
         return taskRepository.findById(id);
     }
 
     public Flux<Task> list(String name) {
-        var task = new Task(null, name, null, null, null, null, null);
+        var task = new Task(name, null, null, null);
         Example<Task> query = QueryBuilder.makeQuery(task);
         return taskRepository.findAll(query, Sort.by("name").ascending());
     }

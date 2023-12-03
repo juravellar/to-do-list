@@ -2,6 +2,7 @@ package com.avellar.todolist.application.usecases;
 
 import com.avellar.todolist.application.gateways.TaskGateway;
 import com.avellar.todolist.classes.QueryBuilder;
+import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import com.avellar.todolist.classes.TaskMapper;
 import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
@@ -13,9 +14,9 @@ import reactor.core.publisher.Mono;
 
 public class CreateTaskInterector {
     private final TaskGateway taskGateway;
-    private final TaskRepository taskRepository;
+    private TaskRepository taskRepository;
 
-    public CreateTaskInterector(TaskGateway taskGateway, TaskRepository taskRepository) {
+    public CreateTaskInterector(TaskGateway taskGateway ) {
         this.taskGateway = taskGateway;
         this.taskRepository = taskRepository;
     }
@@ -36,7 +37,7 @@ public class CreateTaskInterector {
                 .flatMap(taskRepository::save);
     }
 
-    public Mono<Task> get(Long id) {
+    public Mono<TaskEntity> get(Long id) {
         return taskRepository.findById(id);
     }
 

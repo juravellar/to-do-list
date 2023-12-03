@@ -4,6 +4,7 @@ import com.avellar.todolist.application.gateways.TaskGateway;
 import com.avellar.todolist.domain.entity.Task;
 import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
+import reactor.core.publisher.Mono;
 
 public class TaskRepositoryGateway implements TaskGateway {
     private final TaskRepository taskRepository;
@@ -17,7 +18,7 @@ public class TaskRepositoryGateway implements TaskGateway {
     @Override
     public Task createTask(Task taskDomainObj) {
         TaskEntity taskEntity = taskEntityMapper.toEntity(taskDomainObj);
-        TaskEntity savedObj = taskRepository.save(taskEntity);
-        return taskEntityMapper.toDomainObj(savedObj);
+        Mono<TaskEntity> savedObj = taskRepository.save(taskEntity);
+        return taskEntityMapper.toDomainObj(savedObj.block());
     }
 }

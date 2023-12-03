@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.avellar.todolist.service.TaskService;
-import com.avellar.todolist.infrastructure.controller.CreateTaskResponse;
 
 @RestController
 @RequestMapping("/tasks")
@@ -32,7 +31,7 @@ public class TaskController {
     }
 
     @PatchMapping("{id}")
-    public Mono<Task> edit(@PathVariable("id") Long id, @RequestBody CreateTaskRequest request) {
+    public Mono<CreateTaskResponse> edit(@PathVariable("id") Long id, @RequestBody CreateTaskRequest request) {
         return createTaskInterector.edit(id, request).map(TaskMapper::toResponse);
     }
 
