@@ -25,10 +25,12 @@ public class CreateTaskInterector {
         return taskGateway.createTask(task);
     }
 
-    public Mono<Task> create(CreateTaskRequest taskRequest) {
-        var task = new Task(
+    public Mono<TaskEntity> create(CreateTaskRequest taskRequest) {
+        var task = new TaskEntity(
                 taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized());
-        return taskRepository.save(task);
+
+        Mono<TaskEntity> save = taskRepository.save(task);
+        return save;
     }
 
     public Mono<Task> edit(Long id, CreateTaskRequest taskRequest) {
@@ -41,10 +43,11 @@ public class CreateTaskInterector {
         return taskRepository.findById(id);
     }
 
-    public Flux<Task> list(String name) {
-        var task = new Task(name, null, null, null);
-        Example<Task> query = QueryBuilder.makeQuery(task);
-        return taskRepository.findAll(query, Sort.by("name").ascending());
+    public void list(String name) {
+        var task = new TaskEntity(name, null, null, null);
+        Example<TaskEntity> query = QueryBuilder.makeQuery(task);
+        Flux<TaskEntity> name1 = taskRepository.findAll(query, Sort.by("name").ascending());
+        return ;
     }
     }
 

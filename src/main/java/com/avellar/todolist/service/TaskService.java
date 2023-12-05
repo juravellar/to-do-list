@@ -37,9 +37,10 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public Flux<Task> list(String name) {
-        var task = new Task(name, null, null, null);
-        Example<Task> query = QueryBuilder.makeQuery(task);
-        return taskRepository.findAll(query, Sort.by("name").ascending());
+    public static Flux<Task> list(String name) {
+        var task = new TaskEntity(name, null, null, null);
+        Example<TaskEntity> query = QueryBuilder.makeQuery(task);
+        taskRepository.findAll(query, Sort.by("name").ascending())
+        return t;
     }
 }

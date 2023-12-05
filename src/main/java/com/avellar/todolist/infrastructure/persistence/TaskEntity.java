@@ -79,4 +79,5 @@ public class TaskEntity{
         this.realized = realized;
         this.prioritized = prioritized;
     }
+
 }
