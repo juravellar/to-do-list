@@ -1,11 +1,7 @@
 package com.avellar.todolist.infrastructure.persistence;
 
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 public class TaskEntity{
         @Id
@@ -14,6 +10,8 @@ public class TaskEntity{
         private @NotBlank String description;
         private @NotBlank Boolean realized;
         private @NotBlank Boolean prioritized;
+
+
     public Long getId() {
         return id;
     }

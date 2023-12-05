@@ -3,6 +3,7 @@ package com.avellar.todolist.infrastructure.controller;
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.classes.TaskMapper;
 import com.avellar.todolist.domain.entity.Task;
+import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +36,11 @@ public class TaskController {
                 .map(task -> ResponseEntity.ok(TaskMapper.toResponse(task)))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
-
     @GetMapping("{id}")
-    public Mono<ResponseEntity<CreateTaskResponse>> get(@PathVariable("id") Long id) {
-        return createTaskInteractor.get(id)
+    public Mono<ResponseEntity<CreateTaskResponse>> get(@PathVariable("id") Long id, @RequestBody CreateTaskRequest request) {
+        return createTaskInteractor.get(id, request)
                 .map(task -> ResponseEntity.ok(TaskMapper.toResponse(task)))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @GetMapping

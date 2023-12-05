@@ -38,10 +38,10 @@ public class CreateTaskInteractor {
         return taskRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found")))
                 .map(task -> TaskMapper.updateTaskFromDTO(taskRequest, task))
-                .flatMap(updatedTask -> taskRepository.save(updatedTask));
+                .flatMap(taskRepository::save);
     }
 
-    public Mono<TaskEntity> get(Long id) {
+    public Mono<TaskEntity> get(Long id, CreateTaskRequest request) {
         return taskRepository.findById(id);
     }
 

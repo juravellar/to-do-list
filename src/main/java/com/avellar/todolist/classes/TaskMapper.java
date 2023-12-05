@@ -17,10 +17,13 @@ public class TaskMapper {
         return new Task(id, name, description, prioritized, realized);
     }
 
+    public static CreateTaskResponse toResponse(Task taskEntity) {
+        return new CreateTaskResponse(taskEntity.getId(), taskEntity.getName(), taskEntity.getDescription(),
+                taskEntity.getPrioritized(), taskEntity.getRealized());
+    }
 
     public static CreateTaskResponse toResponse(TaskEntity task) {
         return new CreateTaskResponse(task.getId(), task.getName(), task.getDescription(),
                 task.getPrioritized(), task.getRealized());
     }
-
 }
