@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 public class TaskEntityMapper {
     TaskEntity toEntity (Task taskDomainObj){
-        return new TaskEntity(taskDomainObj.name(), taskDomainObj.description(), taskDomainObj.realized(), taskDomainObj.prioritized());
+        return new TaskEntity(taskDomainObj.id(), taskDomainObj.name(), taskDomainObj.description(), taskDomainObj.realized(), taskDomainObj.prioritized());
     }
 
     Task toDomainObj(TaskEntity taskEntity){
-        return new Task(taskEntity.getName(), taskEntity.getDescription(), taskEntity.getRealized(), taskEntity.getPrioritized());
+        return new Task(taskEntity.getId(), taskEntity.getName(), taskEntity.getDescription(), taskEntity.getRealized(), taskEntity.getPrioritized());
     }
 }

@@ -73,7 +73,8 @@ public class TaskEntity{
         this.updatedAt = updatedAt;
     }
 
-    public TaskEntity(String name, String description, Boolean realized, Boolean prioritized) {
+    public TaskEntity(Long id, String name, String description, Boolean realized, Boolean prioritized) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.realized = realized;

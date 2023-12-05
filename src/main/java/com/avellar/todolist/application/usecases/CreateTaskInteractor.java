@@ -12,11 +12,11 @@ import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class CreateTaskInterector {
+public class CreateTaskInteractor {
     private final TaskGateway taskGateway;
     private TaskRepository taskRepository;
 
-    public CreateTaskInterector(TaskGateway taskGateway ) {
+    public CreateTaskInteractor(TaskGateway taskGateway ) {
         this.taskGateway = taskGateway;
         this.taskRepository = taskRepository;
     }
@@ -27,7 +27,7 @@ public class CreateTaskInterector {
 
     public Mono<TaskEntity> create(CreateTaskRequest taskRequest) {
         var task = new TaskEntity(
-                taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized());
+                taskRequest.id(), taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized());
 
         Mono<TaskEntity> save = taskRepository.save(task);
         return save;
@@ -44,7 +44,7 @@ public class CreateTaskInterector {
     }
 
     public void list(String name) {
-        var task = new TaskEntity(name, null, null, null);
+        var task = new TaskEntity(null, name, null, null, null);
         Example<TaskEntity> query = QueryBuilder.makeQuery(task);
         Flux<TaskEntity> name1 = taskRepository.findAll(query, Sort.by("name").ascending());
         return ;

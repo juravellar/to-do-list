@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class TaskService {
-    private static TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
     private final Slugify slg;
 
     public TaskService(TaskRepository taskRepository) {
@@ -23,7 +23,7 @@ public class TaskService {
 
     public Mono<Task> create(CreateTaskRequest taskRequest) {
         var task = new Task(
-                taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized());
+                taskRequest.id(), taskRequest.name(), taskRequest.description(), taskRequest.prioritized(), taskRequest.r());
         return taskRepository.save(task);
     }
 
@@ -37,10 +37,10 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public static Flux<Task> list(String name) {
-        var task = new TaskEntity(name, null, null, null);
-        Example<TaskEntity> query = QueryBuilder.makeQuery(task);
-        taskRepository.findAll(query, Sort.by("name").ascending())
-        return t;
+    public Flux<Task> list(String name) {
+        var taskEntity = new TaskEntity(null, name, null, null, null);
+        Example<TaskEntity> query = Example.of(taskEntity);
+        return taskRepository.findAll(query, Sort.by("name").ascending());
     }
+}
 }

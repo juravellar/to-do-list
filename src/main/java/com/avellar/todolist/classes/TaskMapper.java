@@ -7,17 +7,20 @@ import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import org.springframework.util.StringUtils;
 
 public class TaskMapper {
+
     public static Task updateTaskFromDTO(CreateTaskRequest taskRequest, TaskEntity task) {
-        final String name = StringUtils.hasText(taskRequest.name()) ? taskRequest.name() : task.name();
-        final String description = StringUtils.hasText(taskRequest.description()) ? taskRequest.description() : task.description();
-        final Boolean realized = taskRequest.realized() ? taskRequest.realized() : task.realized();
-        final Boolean prioritized = taskRequest.prioritized() ? taskRequest.prioritized() : task.prioritized();
-        return new Task(name, description, prioritized, realized);
+        final Long id = taskRequest.id() != null ? taskRequest.id() : task.getId();
+        final String name = StringUtils.hasText(taskRequest.name()) ? taskRequest.name() : task.getName();
+        final String description = StringUtils.hasText(taskRequest.description()) ? taskRequest.description() : task.getDescription();
+        final Boolean realized = taskRequest.realized() != null ? taskRequest.realized() : task.getRealized();
+        final Boolean prioritized = taskRequest.prioritized() != null ? taskRequest.prioritized() : task.getPrioritized();
+        return new Task(id, name, description, prioritized, realized);
     }
 
-    public static CreateTaskResponse toResponse(Task task) {
-        return new CreateTaskResponse(task.name(), task.description(),
-                task.prioritized(), task.realized());
+
+    public static CreateTaskResponse toResponse(TaskEntity task) {
+        return new CreateTaskResponse(task.getId(), task.getName(), task.getDescription(),
+                task.getPrioritized(), task.getRealized());
     }
 
 }
