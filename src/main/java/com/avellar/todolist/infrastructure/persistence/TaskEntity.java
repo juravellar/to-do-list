@@ -14,9 +14,6 @@ public class TaskEntity{
         private @NotBlank String description;
         private @NotBlank Boolean realized;
         private @NotBlank Boolean prioritized;
-        private @CreatedDate LocalDateTime createdAt;
-        private @LastModifiedDate LocalDateTime updatedAt;
-
     public Long getId() {
         return id;
     }
@@ -55,22 +52,6 @@ public class TaskEntity{
 
     public void setPrioritized(Boolean prioritized) {
         this.prioritized = prioritized;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public TaskEntity(Long id, String name, String description, Boolean realized, Boolean prioritized) {

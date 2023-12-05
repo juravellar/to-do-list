@@ -16,4 +16,8 @@ public record Task (Long id, String name, String description, Boolean realized, 
     public Boolean getPrioritized() {
         return prioritized;
     }
+
+    public Boolean getRealized() {
+        return realized;
+    }
 }

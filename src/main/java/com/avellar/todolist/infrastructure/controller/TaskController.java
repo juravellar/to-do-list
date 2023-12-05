@@ -23,7 +23,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public CreateTaskResponse create(@Valid @RequestBody CreateTaskRequest request) {
+    public CreateTaskResponse create (@Valid @RequestBody CreateTaskRequest request) {
         Task taskBusinessObj = TaskDTOMapper.toTask(request);
         Task task = createTaskInteractor.createTask(taskBusinessObj);
         return taskDTOMapper.toResponse(task);
@@ -32,8 +32,7 @@ public class TaskController {
     @PatchMapping("{id}")
     public Mono<ResponseEntity<CreateTaskResponse>> edit(@PathVariable("id") Long id, @RequestBody CreateTaskRequest request) {
         return createTaskInteractor.edit(id, request)
-                .map(TaskMapper::toResponse)
-                .map(response -> ResponseEntity.ok().body(response))
+                .map(task -> ResponseEntity.ok(TaskMapper.toResponse(task)))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
@@ -56,6 +55,3 @@ public class TaskController {
     }
 }
 
-
-
-}

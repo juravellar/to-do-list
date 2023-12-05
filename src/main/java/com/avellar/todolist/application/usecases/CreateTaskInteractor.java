@@ -9,14 +9,16 @@ import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
 import com.avellar.todolist.domain.entity.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class CreateTaskInteractor {
     private final TaskGateway taskGateway;
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
-    public CreateTaskInteractor(TaskGateway taskGateway ) {
+    public CreateTaskInteractor(TaskGateway taskGateway, TaskRepository taskRepository) {
         this.taskGateway = taskGateway;
         this.taskRepository = taskRepository;
     }
@@ -25,29 +27,29 @@ public class CreateTaskInteractor {
         return taskGateway.createTask(task);
     }
 
-    public Mono<TaskEntity> create(CreateTaskRequest taskRequest) {
+    public Mono<TaskEntity> create (CreateTaskRequest taskRequest) {
         var task = new TaskEntity(
                 taskRequest.id(), taskRequest.name(), taskRequest.description(),taskRequest.prioritized(), taskRequest.realized());
 
-        Mono<TaskEntity> save = taskRepository.save(task);
-        return save;
+        return taskRepository.save(task);
     }
 
     public Mono<Task> edit(Long id, CreateTaskRequest taskRequest) {
         return taskRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found")))
                 .map(task -> TaskMapper.updateTaskFromDTO(taskRequest, task))
-                .flatMap(taskRepository::save);
+                .flatMap(updatedTask -> taskRepository.save(updatedTask));
     }
 
     public Mono<TaskEntity> get(Long id) {
         return taskRepository.findById(id);
     }
 
-    public void list(String name) {
-        var task = new TaskEntity(null, name, null, null, null);
-        Example<TaskEntity> query = QueryBuilder.makeQuery(task);
-        Flux<TaskEntity> name1 = taskRepository.findAll(query, Sort.by("name").ascending());
-        return ;
+    public Flux<TaskEntity> list(String name) {
+            var task = new TaskEntity(null, name, null, null, null);
+            Example<TaskEntity> query = QueryBuilder.makeQuery(task);
+        return taskRepository.findAll(query, Sort.by("name").ascending());
     }
+
     }
 

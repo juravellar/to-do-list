@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TaskConfig {
     @Bean
-    CreateTaskInteractor createTaskCase (TaskGateway taskGateway){
-        return new CreateTaskInteractor(taskGateway);
+    CreateTaskInteractor createTaskCase (TaskGateway taskGateway, TaskRepository taskRepository){
+        return new CreateTaskInteractor(taskGateway, taskRepository);
     }
 
     @Bean
