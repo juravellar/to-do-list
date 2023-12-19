@@ -18,8 +18,8 @@ public class TaskMapper {
     }
 
     public static CreateTaskResponse toResponse(Task taskEntity) {
-        return new CreateTaskResponse(taskEntity.getId(), taskEntity.getName(), taskEntity.getDescription(),
-                taskEntity.getPrioritized(), taskEntity.getRealized());
+        return new CreateTaskResponse(taskEntity.id(), taskEntity.name(), taskEntity.description(),
+                taskEntity.prioritized(), taskEntity.realized());
     }
 
     public static CreateTaskResponse toResponse(TaskEntity task) {

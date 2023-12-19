@@ -2,6 +2,10 @@ package com.avellar.todolist.infrastructure.persistence;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+@Entity
+@Table(name = "task")
 
 public class TaskEntity{
         @Id

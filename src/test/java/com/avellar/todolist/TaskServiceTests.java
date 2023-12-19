@@ -2,9 +2,7 @@ package com.avellar.todolist;
 
 
 import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
-;
 import com.avellar.todolist.infrastructure.persistence.TaskEntity;
-import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +18,6 @@ public class TaskServiceTests {
 
     @Autowired
     WebTestClient webTestClient;
-    @Autowired
-    TaskRepository taskRepository;
 
     @Test
     public void testCreateTaskSuccess() {
