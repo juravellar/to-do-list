@@ -1,13 +1,13 @@
 package com.avellar.todolist.infrastructure.persistence;
 
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "task")
 
-public class TaskEntity{
+public class Task {
         @Id
         private Long id;
         private @NotBlank String name;
@@ -56,7 +56,7 @@ public class TaskEntity{
         this.prioritized = prioritized;
     }
 
-    public TaskEntity(Long id, String name, String description, Boolean realized, Boolean prioritized) {
+    public Task(Long id, String name, String description, Boolean realized, Boolean prioritized) {
         this.id = id;
         this.name = name;
         this.description = description;

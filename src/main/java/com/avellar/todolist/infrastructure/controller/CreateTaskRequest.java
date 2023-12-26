@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CreateTaskRequest(Long id,
                                 @NotBlank String name, @NotBlank String description,
-                                Boolean realized, Boolean prioritized
+                                 Boolean prioritized, Boolean realized
 ) {
 
     @Override

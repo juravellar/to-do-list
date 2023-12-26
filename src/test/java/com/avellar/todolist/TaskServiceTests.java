@@ -2,7 +2,7 @@ package com.avellar.todolist;
 
 
 import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
-import com.avellar.todolist.infrastructure.persistence.TaskEntity;
+import com.avellar.todolist.infrastructure.persistence.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +13,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(TestConfig.class)
 public class TaskServiceTests {
-    public static final TaskEntity ORGANIZAR_ARMARIO = new TaskEntity(
+    public static final Task ORGANIZAR_ARMARIO = new Task(
             1L, "Organizar", "Organizar Armario", false, false);
 
     @Autowired
@@ -38,8 +38,8 @@ public class TaskServiceTests {
                 .jsonPath("id").isEqualTo(id)
                 .jsonPath("name").isEqualTo(name)
                 .jsonPath("description").isEqualTo(description)
-                .jsonPath("prioritized").isEqualTo(prioritized)
                 .jsonPath("realized").isEqualTo(realized)
+                .jsonPath("prioritized").isEqualTo(prioritized)
                 .jsonPath("createdAt").isNotEmpty();
     }
 
@@ -73,7 +73,6 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-
                 .jsonPath("id").isEqualTo(newId)
                 .jsonPath("name").isEqualTo(newName)
                 .jsonPath("description").isEqualTo(newDescription)
@@ -159,11 +158,11 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.getName())
-                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
-                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
-                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(ORGANIZAR_ARMARIO.getName())
+                .jsonPath("$.[0].description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
+                .jsonPath("$.[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
+                .jsonPath("$.[0].realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
     }
 
     @Test
@@ -184,11 +183,11 @@ public class TaskServiceTests {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$").isArray()
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.getName())
-                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
-                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
-                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(ORGANIZAR_ARMARIO.getName())
+                .jsonPath("$.[0].description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
+                .jsonPath("$.[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
+                .jsonPath("$.[0].realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
     }
 
     @Test
@@ -201,11 +200,11 @@ public class TaskServiceTests {
                 .expectBody()
                 .jsonPath("$").isArray()
                 .jsonPath("$.length()").isEqualTo(1)
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.getName())
-                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
-                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
-                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(ORGANIZAR_ARMARIO.getName())
+                .jsonPath("$.[0].description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
+                .jsonPath("$.[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
+                .jsonPath("$.[0].realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
     }
 
     @Test

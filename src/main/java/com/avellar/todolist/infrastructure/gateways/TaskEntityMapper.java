@@ -1,16 +1,13 @@
 package com.avellar.todolist.infrastructure.gateways;
 
-import com.avellar.todolist.domain.entity.Task;
-import com.avellar.todolist.infrastructure.persistence.TaskEntity;
-
-import java.time.LocalDateTime;
+import com.avellar.todolist.infrastructure.persistence.Task;
 
 public class TaskEntityMapper {
-    TaskEntity toEntity (Task taskDomainObj){
-        return new TaskEntity(taskDomainObj.id(), taskDomainObj.name(), taskDomainObj.description(), taskDomainObj.realized(), taskDomainObj.prioritized());
+    Task toEntity (com.avellar.todolist.domain.entity.Task taskDomainObj){
+        return new Task(taskDomainObj.id(), taskDomainObj.name(), taskDomainObj.description(), taskDomainObj.realized(), taskDomainObj.prioritized());
     }
 
-    Task toDomainObj(TaskEntity taskEntity){
-        return new Task(taskEntity.getId(), taskEntity.getName(), taskEntity.getDescription(), taskEntity.getRealized(), taskEntity.getPrioritized());
+    com.avellar.todolist.domain.entity.Task toDomainObj(Task task){
+        return new com.avellar.todolist.domain.entity.Task(task.getId(), task.getName(), task.getDescription(), task.getRealized(), task.getPrioritized());
     }
 }

@@ -3,7 +3,6 @@ package com.avellar.todolist.infrastructure.controller;
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.classes.TaskMapper;
 import com.avellar.todolist.domain.entity.Task;
-import com.avellar.todolist.infrastructure.persistence.TaskEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,8 @@ public class TaskController {
 
     @PostMapping
     public CreateTaskResponse create (@Valid @RequestBody CreateTaskRequest request) {
-        Task taskBusinessObj = TaskDTOMapper.toTask(request);
-        Task task = createTaskInteractor.createTask(taskBusinessObj);
+         Task taskBusinessObj = TaskDTOMapper.toTask(request);
+       Task task = createTaskInteractor.createTask(taskBusinessObj);
         return taskDTOMapper.toResponse(task);
     }
 

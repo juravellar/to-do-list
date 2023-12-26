@@ -2,8 +2,7 @@ package com.avellar.todolist.service;
 
 import com.avellar.todolist.infrastructure.controller.CreateTaskRequest;
 import com.avellar.todolist.classes.TaskMapper;
-import com.avellar.todolist.domain.entity.Task;
-import com.avellar.todolist.infrastructure.persistence.TaskEntity;
+import com.avellar.todolist.infrastructure.persistence.Task;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import com.github.slugify.Slugify;
 import org.springframework.data.domain.Example;
@@ -20,27 +19,27 @@ public class TaskService {
         this.slg = Slugify.builder().build();
     }
 
-    public Mono<Task> create(CreateTaskRequest taskRequest) {
-        var task = new Task(
+    public Mono<com.avellar.todolist.domain.entity.Task> create(CreateTaskRequest taskRequest) {
+        var task = new com.avellar.todolist.domain.entity.Task(
                 taskRequest.id(), taskRequest.name(), taskRequest.description(), taskRequest.prioritized(), taskRequest.realized());
         return taskRepository.save(task);
     }
 
-    public Mono<Task> edit(Long id, CreateTaskRequest taskRequest) {
+    public Mono<com.avellar.todolist.domain.entity.Task> edit(Long id, CreateTaskRequest taskRequest) {
         return taskRepository.findById(id)
                 .map(task -> TaskMapper.updateTaskFromDTO(taskRequest, task))
                 .flatMap(taskRepository::save);
     }
 
-    public Mono<TaskEntity> get(Long id) {
+    public Mono<Task> get(Long id) {
         return taskRepository.findById(id);
     }
 
-    public static Flux<TaskEntity> list(String name) {
+    public static Flux<Task> list(String name) {
         return Mono.justOrEmpty(name)
                 .flatMapMany(filterName -> {
-                    var taskEntity = new TaskEntity(null, name, null, null, null);
-                    Example<TaskEntity> query = Example.of(taskEntity);
+                    var taskEntity = new Task(null, name, null, null, null);
+                    Example<Task> query = Example.of(taskEntity);
                     return taskRepository.findAll(query, Sort.by("name").ascending());
                 });
     }
