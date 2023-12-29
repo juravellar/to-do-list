@@ -24,8 +24,8 @@ public class TaskController {
 
     @PostMapping
     public CreateTaskResponse create (@Valid @RequestBody CreateTaskRequest request) {
-         Task taskBusinessObj = TaskDTOMapper.toTask(request);
-       Task task = createTaskInteractor.createTask(taskBusinessObj);
+        Task taskBusinessObj = TaskDTOMapper.toTask(request);
+        Task task = createTaskInteractor.createTask(taskBusinessObj);
         return taskDTOMapper.toResponse(task);
     }
 
@@ -49,6 +49,7 @@ public class TaskController {
                         .id(task.getId())
                         .name(task.getName())
                         .description(task.getDescription())
+                        .realized(task.getRealized())
                         .prioritized(task.getPrioritized())
                         .build());
     }

@@ -24,8 +24,8 @@ public class TaskServiceTests {
         final Long id = 1L;
         final String name = "Valid Name";
         final String description = "Valid Description";
-        final Boolean realized = false;
-        final Boolean prioritized = false;
+        final Boolean realized = true;
+        final Boolean prioritized = true;
 
         webTestClient
                 .post()
