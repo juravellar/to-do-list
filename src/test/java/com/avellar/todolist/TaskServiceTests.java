@@ -35,12 +35,12 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
-                .jsonPath("id").isEqualTo(id)
-                .jsonPath("name").isEqualTo(name)
-                .jsonPath("description").isEqualTo(description)
-                .jsonPath("realized").isEqualTo(realized)
-                .jsonPath("prioritized").isEqualTo(prioritized)
-                .jsonPath("createdAt").isNotEmpty();
+                .jsonPath("$.[0].id").isEqualTo(id)
+                .jsonPath("$.[0].name").isEqualTo(name)
+                .jsonPath("$.[0].description").isEqualTo(description)
+                .jsonPath("$.[0].realized").isEqualTo(realized)
+                .jsonPath("$.[0].prioritized").isEqualTo(prioritized)
+                .jsonPath("$.[0].createdAt").isNotEmpty();
     }
 
     @Test
@@ -73,11 +73,11 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(newId)
-                .jsonPath("name").isEqualTo(newName)
-                .jsonPath("description").isEqualTo(newDescription)
-                .jsonPath("prioritized").isEqualTo(newPrioritized)
-                .jsonPath("realized").isEqualTo(newRealized);
+                .jsonPath("$.[0].id").isEqualTo(newId)
+                .jsonPath("$.[0].name").isEqualTo(newName)
+                .jsonPath("$.[0].description").isEqualTo(newDescription)
+                .jsonPath("$.[0].prioritized").isEqualTo(newPrioritized)
+                .jsonPath("$.[0].realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -87,11 +87,11 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(newName)
-                .jsonPath("description").isEqualTo(newDescription)
-                .jsonPath("prioritized").isEqualTo(newPrioritized)
-                .jsonPath("realized").isEqualTo(newRealized);
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(newName)
+                .jsonPath("$.[0].description").isEqualTo(newDescription)
+                .jsonPath("$.[0].prioritized").isEqualTo(newPrioritized)
+                .jsonPath("$.[0].realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -101,11 +101,11 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.getName())
-                .jsonPath("description").isEqualTo(newDescription)
-                .jsonPath("prioritized").isEqualTo(newPrioritized)
-                .jsonPath("realized").isEqualTo(newRealized);
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(ORGANIZAR_ARMARIO.getName())
+                .jsonPath("$.[0].description").isEqualTo(newDescription)
+                .jsonPath("$.[0].prioritized").isEqualTo(newPrioritized)
+                .jsonPath("$.[0].realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -115,11 +115,11 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.getName())
-                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
-                .jsonPath("prioritized").isEqualTo(newPrioritized)
-                .jsonPath("realized").isEqualTo(newRealized);
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(ORGANIZAR_ARMARIO.getName())
+                .jsonPath("$.[0].description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
+                .jsonPath("$.[0].prioritized").isEqualTo(newPrioritized)
+                .jsonPath("$.[0].realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -129,11 +129,11 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.getName())
-                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
-                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
-                .jsonPath("realized").isEqualTo(newRealized);
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(ORGANIZAR_ARMARIO.getName())
+                .jsonPath("$.[0].description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
+                .jsonPath("$.[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
+                .jsonPath("$.[0].realized").isEqualTo(newRealized);
 
         webTestClient
                 .patch()
@@ -143,11 +143,11 @@ public class TaskServiceTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(ORGANIZAR_ARMARIO.getId())
-                .jsonPath("name").isEqualTo(ORGANIZAR_ARMARIO.getName())
-                .jsonPath("description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
-                .jsonPath("prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
-                .jsonPath("realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
+                .jsonPath("$.[0].id").isEqualTo(ORGANIZAR_ARMARIO.getId())
+                .jsonPath("$.[0].name").isEqualTo(ORGANIZAR_ARMARIO.getName())
+                .jsonPath("$.[0].description").isEqualTo(ORGANIZAR_ARMARIO.getDescription())
+                .jsonPath("$.[0].prioritized").isEqualTo(ORGANIZAR_ARMARIO.getPrioritized())
+                .jsonPath("$.[0].realized").isEqualTo(ORGANIZAR_ARMARIO.getRealized());
     }
 
     @Test

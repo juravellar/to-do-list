@@ -1,14 +1,15 @@
 package com.avellar.todolist.infrastructure.persistence;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+
 @Entity
 @Table(name = "task")
 
 public class Task {
         @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         private @NotBlank String name;
         private @NotBlank String description;

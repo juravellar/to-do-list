@@ -7,6 +7,7 @@ import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import com.github.slugify.Slugify;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
