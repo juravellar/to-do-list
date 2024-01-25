@@ -1,7 +1,6 @@
 package com.avellar.todolist.infrastructure.controller;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +13,6 @@ import com.avellar.todolist.infrastructure.controller.dto.TaskRequest;
 import com.avellar.todolist.infrastructure.controller.dto.TaskResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -67,11 +66,11 @@ public class TaskControllerTest {
 
     assertAll(
         () -> assertEquals(Objects.requireNonNull(responseEntity).getStatusCode(),
-            HttpStatusCode.valueOf(201)),
-        () -> assertEquals(Objects.requireNonNull(responseEntity)
-            .getBody().id(), taskResponse.id()),
-        () -> assertEquals(Objects.requireNonNull(responseEntity)
-            .getBody().description(), taskResponse.description())
+                HttpStatusCode.valueOf(201)),
+        () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
+                .getBody()).id(), taskResponse.id()),
+        () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
+                .getBody()).description(), taskResponse.description())
     );
   }
 
@@ -90,10 +89,10 @@ public class TaskControllerTest {
     assertAll(
             () -> assertEquals(Objects.requireNonNull(responseEntity).getStatusCode(),
                     HttpStatusCode.valueOf(200)),
-            () -> assertEquals(Objects.requireNonNull(responseEntity)
-                    .getBody().id(), taskResponse.id()),
-            () -> assertEquals(Objects.requireNonNull(responseEntity)
-                    .getBody().description(), taskResponse.description())
+            () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
+                    .getBody()).id(), taskResponse.id()),
+            () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
+                    .getBody()).description(), taskResponse.description())
     );
   }
 
@@ -112,16 +111,16 @@ public class TaskControllerTest {
     assertAll(
             () -> assertEquals(Objects.requireNonNull(responseEntity).getStatusCode(),
                     HttpStatusCode.valueOf(200)),
-            () -> assertEquals(Objects.requireNonNull(responseEntity)
-                    .getBody().id(), taskResponse.id()),
-            () -> assertEquals(Objects.requireNonNull(responseEntity)
-                    .getBody().description(), taskResponse.description())
+            () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
+                    .getBody()).id(), taskResponse.id()),
+            () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
+                    .getBody()).description(), taskResponse.description())
     );
   }
 
   @Test
   public void listTaskByName() throws Exception {
-    // Arrange
+
     MockHttpServletRequest request = new MockHttpServletRequest();
     RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
@@ -135,13 +134,10 @@ public class TaskControllerTest {
 
     ResponseEntity<List<TaskResponse>> responseEntity = taskController.listTaskByName(taskResponse.name());
 
-    assertAll(
-            () -> assertEquals(Objects.requireNonNull(responseEntity).getStatusCode(),
-                    HttpStatusCode.valueOf(200)),
-            () -> assertEquals(Objects.requireNonNull(responseEntity)
-                    .getBody().id(), taskResponse.id()),
-            () -> assertEquals(Objects.requireNonNull(responseEntity)
-                    .getBody().description(), taskResponse.description())
+    assertAll("Verifications for listTaskByName",
+            () -> assertNotNull(responseEntity, "The answer must not be null"),
+            () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), "The status must be OK"),
+            () -> assertNotNull(responseEntity.getBody(), "The body of the answer must not be null")
     );
   }
 

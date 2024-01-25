@@ -4,7 +4,6 @@ import com.avellar.todolist.application.gateways.TaskGateway;
 import com.avellar.todolist.domain.entity.TaskPort;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
@@ -39,7 +38,7 @@ public class TaskRepositoryGateway implements TaskGateway {
       return taskPorts;
     }
     var task = taskRepository.findByNameContaining(name);
-    return Collections.singletonList(mapper.toDomainObj(task.orElseThrow()));
+    return List.of(mapper.toDomainObj(task.orElseThrow()));
   }
 
   @Override
