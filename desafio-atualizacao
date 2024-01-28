@@ -1,0 +1,33 @@
+Passo 1
+
+Adicionar campo na entidade Task ordem atividade
+o campo ordem atividade nao e obrigatorio ao criar uma task
+
+Criar um end-point para buscar todas as tasks por ordem de prioridade
+regra para preencher o campo ordem atividade
+ordernar das task pelo campo prioritized e created_at
+salvar no banco as tasks consultadas com essa ordem de atividade
+retornar os dados com essa ordem de atividade.
+
+Passo 2
+
+Ao criar uma nova task adicionar o campo ordem atividade
+Nao pode ser cadastrada uma task com o campo realized = true;
+nao pode ter duas atividades com a mesma ordem de atividade
+caso isso ocorrer retornar mensagem para o usuario
+Apos salvar a task no banco retornar uma mensagem falando qual a task e mais prioritaria que a que esta sendo cadastrada
+
+Passo 3
+Criar o end-point para concluir a task
+Nao pode concluir  umas task com prioridade menor do que uma cadastrado no banco
+
+
+
+Para todos os passos
+Sempre que existir erro lançar mensagem de erro
+
+Bonus
+
+Ao salvar uma task atualizar a ordem de atividade de todas as outras tasks
+
+

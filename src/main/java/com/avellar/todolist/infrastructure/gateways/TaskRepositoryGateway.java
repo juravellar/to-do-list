@@ -3,10 +3,11 @@ package com.avellar.todolist.infrastructure.gateways;
 import com.avellar.todolist.application.gateways.TaskGateway;
 import com.avellar.todolist.domain.entity.TaskPort;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
+
 import lombok.AllArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 @AllArgsConstructor
 public class TaskRepositoryGateway implements TaskGateway {
@@ -38,7 +39,11 @@ public class TaskRepositoryGateway implements TaskGateway {
       return taskPorts;
     }
     var task = taskRepository.findByNameContaining(name);
-    return List.of(mapper.toDomainObj(task.orElseThrow()));
+    if(Objects.nonNull(task)){
+      return List.of(mapper.toDomainObj(task.get()));
+    }
+
+    return Collections.emptyList();
   }
 
   @Override

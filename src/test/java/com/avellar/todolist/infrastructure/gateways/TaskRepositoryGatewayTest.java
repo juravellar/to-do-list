@@ -35,7 +35,6 @@ public class TaskRepositoryGatewayTest {
   @BeforeEach
   void setUp() throws Exception {
     MockitoAnnotations.openMocks(this);
-
     taskRepositoryGateway = new TaskRepositoryGateway(taskRepository, mapper);
   }
 
@@ -92,20 +91,39 @@ public class TaskRepositoryGatewayTest {
 
   @Test
   public void listTaskByName() throws Exception {
-
     var task = getTask();
     var taskPort = getTaskPort();
 
-    when(mapper.toEntity(any())).thenReturn(task);
     when(taskRepository.findByNameContaining(any())).thenReturn(Optional.of(task));
+    when(mapper.toEntity(any())).thenReturn(task);
     when(mapper.toDomainObj(any())).thenReturn(taskPort);
 
-    ResponseEntity<List<TaskPort>> taskReturn = (ResponseEntity<List<TaskPort>>) taskRepositoryGateway.getByName(task.getName());
+    List<TaskPort> taskReturn =  taskRepositoryGateway.getByName("TESTE_NAME");
 
     assertAll("Verifications for listTaskByName",
             () -> assertNotNull(taskReturn, "The answer must not be null"),
-            () -> assertEquals(HttpStatus.OK, taskReturn.getStatusCode(), "The status must be OK"),
-            () -> assertNotNull(taskReturn.getBody(), "The body of the answer must not be null")
+            () -> assertEquals(taskReturn.size(), 1)
+//            () -> assertEquals(HttpStatus.OK, taskReturn.getStatusCode(), "The status must be OK"),
+//            () -> assertNotNull(taskReturn.getBody(), "The body of the answer must not be null")
+    );
+  }
+
+  @Test
+  public void listTaskByNameIsNull() throws Exception {
+    var task = getTask();
+    var taskPort = getTaskPort();
+
+    when(taskRepository.findByNameContaining(any())).thenReturn(null);
+    when(mapper.toEntity(any())).thenReturn(task);
+    when(mapper.toDomainObj(any())).thenReturn(taskPort);
+
+    List<TaskPort> taskReturn =  taskRepositoryGateway.getByName("TESTE_NAME");
+
+    assertAll("Verifications for listTaskByName",
+            () -> assertNotNull(taskReturn, "The answer must not be null"),
+            () -> assertEquals(taskReturn.size(), 0)
+//            () -> assertEquals(HttpStatus.OK, taskReturn.getStatusCode(), "The status must be OK"),
+//            () -> assertNotNull(taskReturn.getBody(), "The body of the answer must not be null")
     );
   }
 

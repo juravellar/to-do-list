@@ -48,7 +48,7 @@ public class TaskController {
     return ResponseEntity.status(HttpStatus.OK).body(mapper.toResponse(taskPort));
   }
 
-  @GetMapping
+  @GetMapping("find")
   public ResponseEntity<List<TaskResponse>> listTaskByName(@RequestParam(required = false) String name) {
     var taskPort = listTaskInteractor.getByName(name);
     return ResponseEntity.status(HttpStatus.OK).body(
