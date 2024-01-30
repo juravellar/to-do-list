@@ -1,33 +1,35 @@
-Passo 1
+Passo 1 V
 
-Adicionar campo na entidade Task ordem atividade
-o campo ordem atividade nao e obrigatorio ao criar uma task
+Adicionar campo na entidade Task ordem atividade V
+o campo ordem atividade nao e obrigatorio ao criar uma task V
 
-Criar um end-point para buscar todas as tasks por ordem de prioridade
+Criar um end-point para buscar todas as tasks por ordem de prioridade V
 regra para preencher o campo ordem atividade
-ordernar das task pelo campo prioritized e created_at
-salvar no banco as tasks consultadas com essa ordem de atividade
-retornar os dados com essa ordem de atividade.
-
-Passo 2
-
-Ao criar uma nova task adicionar o campo ordem atividade
-Nao pode ser cadastrada uma task com o campo realized = true;
-nao pode ter duas atividades com a mesma ordem de atividade
-caso isso ocorrer retornar mensagem para o usuario
-Apos salvar a task no banco retornar uma mensagem falando qual a task e mais prioritaria que a que esta sendo cadastrada
-
-Passo 3
-Criar o end-point para concluir a task
-Nao pode concluir  umas task com prioridade menor do que uma cadastrado no banco
+ordernar das task pelo campo prioritized e created_at V
+salvar no banco as tasks consultadas com essa ordem de atividade V
+retornar os dados com essa ordem de atividade. V
 
 
+Passo 2 V
 
-Para todos os passos
-Sempre que existir erro lançar mensagem de erro
+Ao criar uma nova task adicionar o campo ordem atividade V
+Nao pode ser cadastrada uma task com o campo realized = true; V
+nao pode ter duas atividades com a mesma ordem de atividade V
+caso isso ocorrer retornar mensagem para o usuario V
+Apos salvar a task no banco retornar uma mensagem falando qual a task e mais prioritaria que a que esta sendo cadastrada V
 
-Bonus
 
-Ao salvar uma task atualizar a ordem de atividade de todas as outras tasks
+Passo 3 V
+
+Criar o end-point para concluir a task V
+Nao pode concluir  umas task com prioridade menor do que uma cadastrado no banco V
+
+
+*Para todos os passos
+Sempre que existir erro lançar mensagem de erro V
+
+
+*Bônus V
+Ao salvar uma task atualizar a ordem de atividade de todas as outras tasks V
 
 

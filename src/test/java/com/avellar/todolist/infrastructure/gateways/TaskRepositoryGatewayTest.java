@@ -1,25 +1,23 @@
 package com.avellar.todolist.infrastructure.gateways;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import com.avellar.todolist.domain.entity.TaskPort;
 import com.avellar.todolist.infrastructure.persistence.Task;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest()
 @ActiveProfiles("test")
@@ -42,9 +40,11 @@ public class TaskRepositoryGatewayTest {
   public void createTask() throws Exception {
     var task = getTask();
     var taskPort = getTaskPort();
+    String message  = "";
+
     when(mapper.toEntity(any())).thenReturn(task);
     when(taskRepository.save(any())).thenReturn(task);
-    when(mapper.toDomainObj(any())).thenReturn(taskPort);
+    when(mapper.toDomainObj(any(), message)).thenReturn(taskPort);
 
     var taskReturn = taskRepositoryGateway.createTask(getTaskPort());
 
@@ -58,11 +58,12 @@ public class TaskRepositoryGatewayTest {
   public void editTask() throws Exception {
     var task = getTask();
     var taskPort = getTaskPort();
+    String message  = "";
 
     when(mapper.toEntity(any())).thenReturn(task);
     when(taskRepository.findById(any())).thenReturn(Optional.of(task));
     when(taskRepository.save(any())).thenReturn(task);
-    when(mapper.toDomainObj(any())).thenReturn(taskPort);
+    when(mapper.toDomainObj(any(), message)).thenReturn(taskPort);
 
     var taskReturn = taskRepositoryGateway.editTask(task.getId(), taskPort);
 
@@ -76,10 +77,11 @@ public class TaskRepositoryGatewayTest {
   public void getTaskById() throws Exception {
     var task = getTask();
     var taskPort = getTaskPort();
+    String message  = "";
 
     when(mapper.toEntity(any())).thenReturn(task);
     when(taskRepository.findById(any())).thenReturn(Optional.of(task));
-    when(mapper.toDomainObj(any())).thenReturn(taskPort);
+    when(mapper.toDomainObj(any(), message)).thenReturn(taskPort);
 
     var taskReturn = taskRepositoryGateway.getById(task.getId());
 
@@ -93,10 +95,11 @@ public class TaskRepositoryGatewayTest {
   public void listTaskByName() throws Exception {
     var task = getTask();
     var taskPort = getTaskPort();
+    String message  = "";
 
     when(taskRepository.findByNameContaining(any())).thenReturn(Optional.of(task));
     when(mapper.toEntity(any())).thenReturn(task);
-    when(mapper.toDomainObj(any())).thenReturn(taskPort);
+    when(mapper.toDomainObj(any(), message)).thenReturn(taskPort);
 
     List<TaskPort> taskReturn =  taskRepositoryGateway.getByName("TESTE_NAME");
 
@@ -112,10 +115,11 @@ public class TaskRepositoryGatewayTest {
   public void listTaskByNameIsNull() throws Exception {
     var task = getTask();
     var taskPort = getTaskPort();
+    String message  = "";
 
     when(taskRepository.findByNameContaining(any())).thenReturn(null);
     when(mapper.toEntity(any())).thenReturn(task);
-    when(mapper.toDomainObj(any())).thenReturn(taskPort);
+    when(mapper.toDomainObj(any(), message)).thenReturn(taskPort);
 
     List<TaskPort> taskReturn =  taskRepositoryGateway.getByName("TESTE_NAME");
 
@@ -140,7 +144,7 @@ public class TaskRepositoryGatewayTest {
 
   private TaskPort getTaskPort() {
     return new TaskPort(99L, "Organizar", "Organizar Armario", false, false, LocalDateTime.now(),
-        null);
+        null, null);
   }
 
 }

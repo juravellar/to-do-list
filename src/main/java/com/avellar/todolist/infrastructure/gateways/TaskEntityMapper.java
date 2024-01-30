@@ -10,14 +10,14 @@ public class TaskEntityMapper {
 
   Task toEntity(TaskPort taskPort) {
     return new Task(null, taskPort.name(), taskPort.description(), taskPort.prioritized(),
-        taskPort.realized(),
-        LocalDateTime.now(), LocalDateTime.now());
+        taskPort.realized(), LocalDateTime.now(), LocalDateTime.now(), taskPort.activityOrder());
   }
 
-  TaskPort toDomainObj(Task task) {
+  TaskPort toDomainObj(Task task, String message) {
     return new TaskPort(task.getId(), task.getName(), task.getDescription(),
         task.getPrioritized(), task.getRealized(), task.getCreatedAt(),
-        Objects.isNull(task.getUpdatedAt()) ? null : task.getUpdatedAt());
+        Objects.isNull(task.getUpdatedAt()) ? null : task.getUpdatedAt(),
+        Objects.isNull(task.getActivityOrder()) ? null : task.getActivityOrder());
   }
 
   public Task newTask(Task taskDb, TaskPort taskPort) {
@@ -27,6 +27,7 @@ public class TaskEntityMapper {
         .description(Objects.nonNull(taskPort.description()) ? taskPort.description() : taskDb.getDescription())
         .realized(Objects.nonNull(taskPort.realized()) ? taskPort.realized() : taskDb.getRealized())
         .prioritized(Objects.nonNull(taskPort.prioritized()) ? taskPort.prioritized() : taskDb.getPrioritized())
+        .activityOrder(Objects.nonNull(taskPort.activityOrder()) ? taskPort.activityOrder() : taskDb.getActivityOrder())
         .createdAt(taskDb.getCreatedAt())
         .updatedAt(LocalDateTime.now())
         .build();

@@ -4,10 +4,10 @@ import com.avellar.todolist.application.gateways.TaskGateway;
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.application.usecases.EditTaskInteractor;
 import com.avellar.todolist.application.usecases.ListTaskInteractor;
-import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import com.avellar.todolist.infrastructure.controller.dto.TaskDTOMapper;
 import com.avellar.todolist.infrastructure.gateways.TaskEntityMapper;
 import com.avellar.todolist.infrastructure.gateways.TaskRepositoryGateway;
+import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

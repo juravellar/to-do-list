@@ -1,9 +1,5 @@
 package com.avellar.todolist.infrastructure.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.application.usecases.EditTaskInteractor;
 import com.avellar.todolist.application.usecases.ListTaskInteractor;
@@ -11,11 +7,7 @@ import com.avellar.todolist.domain.entity.TaskPort;
 import com.avellar.todolist.infrastructure.controller.dto.TaskDTOMapper;
 import com.avellar.todolist.infrastructure.controller.dto.TaskRequest;
 import com.avellar.todolist.infrastructure.controller.dto.TaskResponse;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,6 +20,15 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -48,8 +49,7 @@ public class TaskControllerTest {
   void setUp() throws Exception {
     MockitoAnnotations.openMocks(this);
 
-    taskController = new TaskController(createTaskUseCase, editTaskInteractor, listTaskInteractor,
-        mapper);
+    taskController = new TaskController(createTaskUseCase, editTaskInteractor, listTaskInteractor, mapper);
   }
 
   @Test
@@ -64,7 +64,7 @@ public class TaskControllerTest {
 
     ResponseEntity<TaskResponse> responseEntity = taskController.createTask(getTaskRequest());
 
-    assertAll(
+    Assertions.assertAll(
         () -> assertEquals(Objects.requireNonNull(responseEntity).getStatusCode(),
                 HttpStatusCode.valueOf(201)),
         () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
@@ -86,7 +86,7 @@ public class TaskControllerTest {
 
     ResponseEntity<TaskResponse> responseEntity = taskController.editTask(taskPort.id(), getTaskRequest());
 
-    assertAll(
+    Assertions.assertAll(
             () -> assertEquals(Objects.requireNonNull(responseEntity).getStatusCode(),
                     HttpStatusCode.valueOf(200)),
             () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
@@ -108,7 +108,7 @@ public class TaskControllerTest {
 
     ResponseEntity<TaskResponse> responseEntity = taskController.getTaskById(taskPort.id());
 
-    assertAll(
+    Assertions.assertAll(
             () -> assertEquals(Objects.requireNonNull(responseEntity).getStatusCode(),
                     HttpStatusCode.valueOf(200)),
             () -> assertEquals(Objects.requireNonNull(Objects.requireNonNull(responseEntity)
@@ -134,17 +134,17 @@ public class TaskControllerTest {
 
     ResponseEntity<List<TaskResponse>> responseEntity = taskController.listTaskByName(taskResponse.name());
 
-    assertAll("Verifications for listTaskByName",
-            () -> assertNotNull(responseEntity, "The answer must not be null"),
+    Assertions.assertAll("Verifications for listTaskByName",
+            () -> Assertions.assertNotNull(responseEntity, "The answer must not be null"),
             () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), "The status must be OK"),
-            () -> assertNotNull(responseEntity.getBody(), "The body of the answer must not be null")
+            () -> Assertions.assertNotNull(responseEntity.getBody(), "The body of the answer must not be null")
     );
   }
 
 
   private TaskPort getTaskPort() {
     return new TaskPort(99L, "Organizar", "Organizar Armario", false, false, LocalDateTime.now(),
-        null);
+            null,null);
   }
 
   private TaskRequest getTaskRequest() {
@@ -153,6 +153,6 @@ public class TaskControllerTest {
 
   private TaskResponse getTaskResponse() {
     return new TaskResponse(99L, "Organizar", "Organizar Armario", false, false,
-        LocalDateTime.now(), null);
+        LocalDateTime.now(), null, null);
   }
 }

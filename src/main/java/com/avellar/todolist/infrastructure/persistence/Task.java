@@ -3,13 +3,14 @@ package com.avellar.todolist.infrastructure.persistence;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDateTime;
 
 @Table("TASK")
 @Data
@@ -34,5 +35,7 @@ public class Task {
   private LocalDateTime createdAt;
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+  @Column(name = "activity_order", nullable = false)
+  private Long activityOrder;
 
 }
