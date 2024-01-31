@@ -1,5 +1,6 @@
 package com.avellar.todolist.infrastructure.controller;
 
+import com.avellar.todolist.application.usecases.CompleteTask;
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.application.usecases.EditTaskInteractor;
 import com.avellar.todolist.application.usecases.ListTaskInteractor;
@@ -41,15 +42,16 @@ public class TaskControllerTest {
   @Mock
   ListTaskInteractor listTaskInteractor;
   @Mock
+ CompleteTask completeTask;
+  @Mock
   TaskDTOMapper mapper;
-
   TaskController taskController;
 
   @BeforeEach
   void setUp() throws Exception {
     MockitoAnnotations.openMocks(this);
 
-    taskController = new TaskController(createTaskUseCase, editTaskInteractor, listTaskInteractor, mapper);
+    taskController = new TaskController(createTaskUseCase, editTaskInteractor, listTaskInteractor, completeTask, mapper);
   }
 
   @Test

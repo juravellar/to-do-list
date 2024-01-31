@@ -1,6 +1,7 @@
 package com.avellar.todolist.main;
 
 import com.avellar.todolist.application.gateways.TaskGateway;
+import com.avellar.todolist.application.usecases.CompleteTask;
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.application.usecases.EditTaskInteractor;
 import com.avellar.todolist.application.usecases.ListTaskInteractor;
@@ -30,6 +31,10 @@ public class TaskConfig {
   }
 
   @Bean
+  CompleteTask completeTask(TaskGateway taskGateway) {
+    return new CompleteTask(taskGateway);
+  }
+  @Bean
   TaskGateway taskGateway(TaskRepository repository, TaskEntityMapper mapper) {
     return new TaskRepositoryGateway(repository, mapper);
   }
@@ -43,4 +48,5 @@ public class TaskConfig {
   TaskDTOMapper taskDTOMapper() {
     return new TaskDTOMapper();
   }
+
 }

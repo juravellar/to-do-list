@@ -10,11 +10,9 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 
   Optional<Task> findByNameContaining(String name);
 
-  List<Task> findAllByCreatedAtOrder(LocalDateTime createdAt);
-
-  List<Task> findAllByPrioritizedOrder(Boolean prioritized);
+  List<Task> findAllByCreatedAt(LocalDateTime createdAt);
 
   boolean existsByActivityOrder(Long activityOrder);
 
-  Task getTaskByPriority();
+  List<Task> findAllByPrioritized(Boolean prioritized);
 }

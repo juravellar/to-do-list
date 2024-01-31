@@ -34,7 +34,9 @@ public class TaskRepositoryGateway implements TaskGateway {
     Task savedTask = taskRepository.save(newTask);
 
     // Buscar a task mais prioritária que a recém-cadastrada
-    Task mostPrioritizedTask = taskRepository.getTaskByPriority();
+    Boolean prioritized = taskPort.prioritized();
+    LocalDateTime createdAt = taskPort.createdAt();
+    Task mostPrioritizedTask = (Task) getTaskByPriority(prioritized, createdAt);
 
     String message;
     if (mostPrioritizedTask != null) {
@@ -86,9 +88,9 @@ public class TaskRepositoryGateway implements TaskGateway {
     List<Task> tasks;
 
     if (prioritized != null) {
-      tasks = taskRepository.findAllByPrioritizedOrder(prioritized);
+      tasks = taskRepository.findAllByPrioritized(prioritized);
     } else {
-      tasks = taskRepository.findAllByCreatedAtOrder(createdAt);
+      tasks = taskRepository.findAllByCreatedAt(createdAt);
     }
 
     for (int i = 0; i < tasks.size(); i++) {
@@ -105,13 +107,16 @@ public class TaskRepositoryGateway implements TaskGateway {
             .collect(Collectors.toList());
   }
 
-
   @Override
-  public TaskPort completeTask(Long taskId) {
-    Task task = taskRepository.findById(taskId)
+  public TaskPort completeTask(Long id) {
+    Task task = taskRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("Task não encontrada"));
 
-    Task mostPrioritizedTask = taskRepository.getTaskByPriority();
+    // Assuming you want to use task's properties for prioritized and createdAt
+    Boolean prioritized = task.getPrioritized();
+    LocalDateTime createdAt = task.getCreatedAt();
+
+    Task mostPrioritizedTask = (Task) getTaskByPriority(prioritized, createdAt);
 
     if (mostPrioritizedTask != null && task.getActivityOrder() < mostPrioritizedTask.getActivityOrder()) {
       throw new IllegalArgumentException("Não é permitido concluir uma task com prioridade menor do que a mais prioritária no banco");
@@ -122,5 +127,7 @@ public class TaskRepositoryGateway implements TaskGateway {
 
     return mapper.toDomainObj(completedTask, "Task concluída com sucesso");
   }
+
+
 }
 
