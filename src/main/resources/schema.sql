@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS task (
     realized boolean not null,
     created_at timestamp not null,
     updated_at timestamp,
-    activity_order int
+    activity_order bigint
     );
