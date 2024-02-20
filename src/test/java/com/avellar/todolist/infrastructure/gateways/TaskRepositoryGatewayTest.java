@@ -1,23 +1,23 @@
 package com.avellar.todolist.infrastructure.gateways;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import com.avellar.todolist.domain.entity.TaskPort;
 import com.avellar.todolist.infrastructure.persistence.Task;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest()
 @ActiveProfiles("test")
@@ -33,7 +33,7 @@ public class TaskRepositoryGatewayTest {
   @BeforeEach
   void setUp() throws Exception {
     MockitoAnnotations.openMocks(this);
-    taskRepositoryGateway = new TaskRepositoryGateway(taskRepository, mapper, taskRepositoryGateway) {
+    taskRepositoryGateway = new TaskRepositoryGateway(taskRepository, mapper) {
       @Override
       public TaskPort completeTask(Long taskId, TaskPort taskPort) {
         return null;

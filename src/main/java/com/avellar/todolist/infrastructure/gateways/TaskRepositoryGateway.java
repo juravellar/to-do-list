@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class TaskRepositoryGateway implements TaskGateway {
+public abstract class TaskRepositoryGateway implements TaskGateway {
 
   private final TaskRepository taskRepository;
   private final TaskEntityMapper mapper;
@@ -129,5 +129,6 @@ public class TaskRepositoryGateway implements TaskGateway {
   }
 
 
+    public abstract TaskPort completeTask(Long taskId, TaskPort taskPort);
 }
 
