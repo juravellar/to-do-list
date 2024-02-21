@@ -5,6 +5,7 @@ import com.avellar.todolist.domain.entity.TaskPort;
 import com.avellar.todolist.infrastructure.persistence.Task;
 import com.avellar.todolist.infrastructure.persistence.TaskRepository;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,7 +18,7 @@ public abstract class TaskRepositoryGateway implements TaskGateway {
   private final TaskEntityMapper mapper;
 
   @Override
-  public TaskPort createTask(TaskPort taskPort) {
+  public TaskPort createTask(@NotNull TaskPort taskPort) {
     // Verificar se a task a ser cadastrada tem realized=true
     if (Boolean.TRUE.equals(taskPort.realized())) {
       throw new IllegalArgumentException("Não é permitido cadastrar uma task com realized=true");
