@@ -39,7 +39,7 @@ public class TaskConfig {
   TaskGateway taskGateway(TaskRepository repository, TaskEntityMapper mapper) {
     return new TaskRepositoryGateway(repository, mapper) {
       @Override
-      public TaskPort completeTask(Long taskId, TaskPort taskPort) {
+      public TaskPort completeTask(Long taskId) {
         return null;
       }
     };

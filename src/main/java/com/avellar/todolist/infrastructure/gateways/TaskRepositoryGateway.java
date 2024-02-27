@@ -50,7 +50,6 @@ public abstract class TaskRepositoryGateway implements TaskGateway {
     return mapper.toDomainObj(savedTask, message);
   }
 
-
   @Override
   public TaskPort editTask(Long id, TaskPort taskPort) {
     var taskDb = taskRepository.findById(id);
@@ -128,8 +127,5 @@ public abstract class TaskRepositoryGateway implements TaskGateway {
 
     return mapper.toDomainObj(completedTask, "Task concluída com sucesso");
   }
-
-
-    public abstract TaskPort completeTask(Long taskId, TaskPort taskPort);
 }
 
