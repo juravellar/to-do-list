@@ -1,6 +1,6 @@
 package com.avellar.todolist.infrastructure.controller;
 
-import com.avellar.todolist.application.usecases.CompleteTask;
+import com.avellar.todolist.application.usecases.CompleteTaskInteractor;
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.application.usecases.EditTaskInteractor;
 import com.avellar.todolist.application.usecases.ListTaskInteractor;
@@ -42,7 +42,7 @@ public class TaskControllerTest {
   @Mock
   ListTaskInteractor listTaskInteractor;
   @Mock
- CompleteTask completeTask;
+  CompleteTaskInteractor completeTask;
   @Mock
   TaskDTOMapper mapper;
   TaskController taskController;

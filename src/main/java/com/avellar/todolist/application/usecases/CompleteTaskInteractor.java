@@ -5,7 +5,7 @@ import com.avellar.todolist.domain.entity.TaskPort;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CompleteTask {
+public class CompleteTaskInteractor {
 
     private final TaskGateway taskGateway;
 

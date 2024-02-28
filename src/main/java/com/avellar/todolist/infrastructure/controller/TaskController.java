@@ -1,6 +1,6 @@
 package com.avellar.todolist.infrastructure.controller;
 
-import com.avellar.todolist.application.usecases.CompleteTask;
+import com.avellar.todolist.application.usecases.CompleteTaskInteractor;
 import com.avellar.todolist.application.usecases.CreateTaskInteractor;
 import com.avellar.todolist.application.usecases.EditTaskInteractor;
 import com.avellar.todolist.application.usecases.ListTaskInteractor;
@@ -25,7 +25,7 @@ public class TaskController {
   private final CreateTaskInteractor createTaskUseCase;
   private final EditTaskInteractor editTaskInteractor;
   private final ListTaskInteractor listTaskInteractor;
-  private final CompleteTask completeTask;
+  private final CompleteTaskInteractor completeTask;
   private final TaskDTOMapper mapper;
 
   @PostMapping

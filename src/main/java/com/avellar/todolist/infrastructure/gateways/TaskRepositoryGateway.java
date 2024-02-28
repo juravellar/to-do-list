@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public abstract class TaskRepositoryGateway implements TaskGateway {
+public class TaskRepositoryGateway implements TaskGateway {
 
   private final TaskRepository taskRepository;
   private final TaskEntityMapper mapper;
@@ -112,7 +112,6 @@ public abstract class TaskRepositoryGateway implements TaskGateway {
     Task task = taskRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("Task não encontrada"));
 
-    // Assuming you want to use task's properties for prioritized and createdAt
     Boolean prioritized = task.getPrioritized();
     LocalDateTime createdAt = task.getCreatedAt();
 

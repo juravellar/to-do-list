@@ -34,10 +34,6 @@ public class TaskRepositoryGatewayTest {
   void setUp() throws Exception {
     MockitoAnnotations.openMocks(this);
     taskRepositoryGateway = new TaskRepositoryGateway(taskRepository, mapper) {
-      @Override
-      public TaskPort completeTask(Long taskId) {
-        return null;
-      }
     };
   }
 
