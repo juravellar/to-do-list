@@ -25,10 +25,10 @@ public class Task {
   private String name;
   @Column(name = "description")
   private String description;
-  @Column(name = "realized")
-  private Boolean realized;
   @Column(name = "prioritized")
   private Boolean prioritized;
+  @Column(name = "realized")
+  private Boolean realized;
   @Column(name = "created_at")
   private LocalDateTime createdAt;
   @Column(name = "updated_at", nullable = false)
