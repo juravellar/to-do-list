@@ -118,9 +118,18 @@ public class TaskRepositoryGateway implements TaskGateway {
     Boolean prioritized = task.getPrioritized();
     LocalDateTime createdAt = task.getCreatedAt();
 
-    Task mostPrioritizedTask = (Task) getTaskByPriority(prioritized, createdAt);
+// Buscar todas as tarefas prioritárias
+    List<TaskPort> prioritizedTasks = getTaskByPriority(prioritized, createdAt);
 
-    if (mostPrioritizedTask != null && task.getActivityOrder() < mostPrioritizedTask.getActivityOrder()) {
+    TaskPort mostPrioritizedTask = null;
+
+    // Encontrar a tarefa mais prioritária na lista
+    for (TaskPort taskPrioritized : prioritizedTasks) {
+      if (mostPrioritizedTask == null || taskPrioritized.activityOrder() < mostPrioritizedTask.activityOrder()) {
+        mostPrioritizedTask = taskPrioritized;
+      }
+    }
+    if (mostPrioritizedTask != null && task.getActivityOrder() < mostPrioritizedTask.activityOrder()) {
       throw new IllegalArgumentException("Não é permitido concluir uma task com prioridade menor do que a mais prioritária no banco");
     }
 
