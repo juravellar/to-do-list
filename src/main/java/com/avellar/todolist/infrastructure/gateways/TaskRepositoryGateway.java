@@ -37,11 +37,14 @@ public class TaskRepositoryGateway implements TaskGateway {
     // Buscar a task mais prioritária que a recém-cadastrada
     Boolean prioritized = taskPort.prioritized();
     LocalDateTime createdAt = taskPort.createdAt();
-    Task mostPrioritizedTask = (Task) getTaskByPriority(prioritized, createdAt);
+    List<TaskPort> prioritizedTasks = getTaskByPriority(prioritized, createdAt);
 
     String message;
-    if (mostPrioritizedTask != null) {
-      message = String.format("Task cadastrada com sucesso. A task mais prioritária é: %s", mostPrioritizedTask.getName());
+    TaskPort mostPrioritizedTask = null;
+
+    if (!prioritizedTasks.isEmpty()) {
+      mostPrioritizedTask = prioritizedTasks.get(0);
+      message = String.format("Task cadastrada com sucesso. A task mais prioritária é: %s", mostPrioritizedTask.name());
     } else {
       message = "Task cadastrada com sucesso, mas não há outras tasks prioritárias no momento.";
     }
