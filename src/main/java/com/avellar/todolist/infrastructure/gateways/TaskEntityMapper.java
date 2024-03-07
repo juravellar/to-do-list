@@ -27,9 +27,10 @@ public class TaskEntityMapper {
         .description(Objects.nonNull(taskPort.description()) ? taskPort.description() : taskDb.getDescription())
         .prioritized(Objects.nonNull(taskPort.prioritized()) ? taskPort.prioritized() : taskDb.getPrioritized())
         .realized(Objects.nonNull(taskPort.realized()) ? taskPort.realized() : taskDb.getRealized())
-        .activityOrder(Objects.nonNull(taskPort.activityOrder()) ? taskPort.activityOrder() : taskDb.getActivityOrder())
         .createdAt(taskDb.getCreatedAt())
         .updatedAt(LocalDateTime.now())
+        .activityOrder(Objects.nonNull(taskPort.activityOrder()) ? taskPort.activityOrder() : taskDb.getActivityOrder())
+
         .build();
   }
 }
