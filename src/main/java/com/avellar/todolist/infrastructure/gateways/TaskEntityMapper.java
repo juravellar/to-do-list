@@ -13,7 +13,7 @@ public class TaskEntityMapper {
         taskPort.realized(), LocalDateTime.now(), LocalDateTime.now(), taskPort.activityOrder());
   }
 
-  TaskPort toDomainObj(Task task, String message) {
+  TaskPort toDomainObj(Task task) {
     return new TaskPort(task.getId(), task.getName(), task.getDescription(),
         task.getPrioritized(), task.getRealized(), task.getCreatedAt(),
         Objects.isNull(task.getUpdatedAt()) ? null : task.getUpdatedAt(),

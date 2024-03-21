@@ -50,7 +50,7 @@ public class TaskRepositoryGateway implements TaskGateway {
     }
 
     // Mapear e retornar a task recém-cadastrada
-    return mapper.toDomainObj(savedTask, message);
+    return mapper.toDomainObj(savedTask);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class TaskRepositoryGateway implements TaskGateway {
     var taskEdit = mapper.newTask(taskDb.orElseThrow(), taskPort);
     var newTask = taskRepository.save(taskEdit);
     String message = "Task editada com sucesso!";
-    return mapper.toDomainObj(newTask, message);
+    return mapper.toDomainObj(newTask);
   }
 
   @Override
@@ -68,12 +68,12 @@ public class TaskRepositoryGateway implements TaskGateway {
     if (Objects.isNull(name)) {
       var tasks = taskRepository.findAll();
       List<TaskPort> taskPorts = new ArrayList<>();
-      tasks.forEach(task -> taskPorts.add(mapper.toDomainObj(task, message)));
+      tasks.forEach(task -> taskPorts.add(mapper.toDomainObj(task)));
       return taskPorts;
     }
     var task = taskRepository.findByNameContaining(name);
     if (Objects.nonNull(task)) {
-      return List.of(mapper.toDomainObj(task.get(), message));
+      return List.of(mapper.toDomainObj(task.get()));
     }
 
     return Collections.emptyList();
@@ -83,7 +83,7 @@ public class TaskRepositoryGateway implements TaskGateway {
   public TaskPort getById(Long id) {
     var task = taskRepository.findById(id);
     String message = "";
-    return mapper.toDomainObj(task.orElseThrow(), message);
+    return mapper.toDomainObj(task.orElseThrow());
   }
 
   @Override
@@ -106,7 +106,7 @@ public class TaskRepositoryGateway implements TaskGateway {
     String message = "";
 
     return tasks.stream()
-            .map(task -> mapper.toDomainObj(task, message))
+            .map(task -> mapper.toDomainObj(task))
             .collect(Collectors.toList());
   }
 
@@ -136,7 +136,7 @@ public class TaskRepositoryGateway implements TaskGateway {
     task.setRealized(true);
     Task completedTask = taskRepository.save(task);
 
-    return mapper.toDomainObj(completedTask, "Task concluída com sucesso");
+    return mapper.toDomainObj(completedTask);
   }
 }
 
