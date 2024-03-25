@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskGateway {
 
-  TaskPort createTask(TaskPort taskPort);
+  TaskPort createTask(TaskPort taskPort, Boolean isPrioritized);
 
   TaskPort editTask(Long id, TaskPort taskPort);
 

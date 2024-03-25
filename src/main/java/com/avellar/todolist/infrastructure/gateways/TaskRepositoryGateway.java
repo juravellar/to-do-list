@@ -18,7 +18,7 @@ public class TaskRepositoryGateway implements TaskGateway {
   private final TaskEntityMapper mapper;
 
   @Override
-  public TaskPort createTask(@NotNull TaskPort taskPort) {
+  public TaskPort createTask(@NotNull TaskPort taskPort, Boolean isPrioritized) {
     // Verificar se a task a ser cadastrada tem realized=true
     if (Boolean.TRUE.equals(taskPort.realized())) {
       throw new IllegalArgumentException("Não é permitido cadastrar uma task com realized=true");
@@ -32,31 +32,37 @@ public class TaskRepositoryGateway implements TaskGateway {
 
     // Criar a nova task
     Task newTask = mapper.toEntity(taskPort);
+    newTask.setPrioritized(isPrioritized);
     Task savedTask = taskRepository.save(newTask);
 
     // Buscar a task mais prioritária que a recém-cadastrada
-    Boolean prioritized = taskPort.prioritized();
-    LocalDateTime createdAt = taskPort.createdAt();
-    List<TaskPort> prioritizedTasks = getTaskByPriority(prioritized, createdAt);
+    if (Boolean.TRUE.equals(isPrioritized)) {
+      List<TaskPort> prioritizedTasks = getTaskByPriority(true, savedTask.getCreatedAt());
 
-    String message;
-    TaskPort mostPrioritizedTask = null;
+      String message;
 
-    if (!prioritizedTasks.isEmpty()) {
-      mostPrioritizedTask = prioritizedTasks.get(0);
-      message = String.format("Task cadastrada com sucesso. A task mais prioritária é: %s", mostPrioritizedTask.name());
-    } else {
-      message = "Task cadastrada com sucesso, mas não há outras tasks prioritárias no momento.";
+      if (!prioritizedTasks.isEmpty()) {
+        TaskPort mostPrioritizedTask = prioritizedTasks.get(0);
+        message = String.format("Task cadastrada com sucesso. A task mais prioritária é: %s", mostPrioritizedTask.name());
+      } else {
+        message = "Task cadastrada com sucesso, mas não há outras tasks prioritárias no momento.";
+      }
+
+      // Mapear e retornar a task recém-cadastrada
+      return mapper.toDomainObj(savedTask);
     }
 
-    // Mapear e retornar a task recém-cadastrada
     return mapper.toDomainObj(savedTask);
   }
-
   @Override
   public TaskPort editTask(Long id, TaskPort taskPort) {
     var taskDb = taskRepository.findById(id);
     var taskEdit = mapper.newTask(taskDb.orElseThrow(), taskPort);
+
+    if (Boolean.TRUE.equals(taskEdit.getPrioritized())) {
+      throw new IllegalArgumentException("Não é permitido editar uma task prioritária");
+    }
+
     var newTask = taskRepository.save(taskEdit);
     String message = "Task editada com sucesso!";
     return mapper.toDomainObj(newTask);
@@ -64,25 +70,21 @@ public class TaskRepositoryGateway implements TaskGateway {
 
   @Override
   public List<TaskPort> getByName(String name) {
-    String message = "";
     if (Objects.isNull(name)) {
       var tasks = taskRepository.findAll();
       List<TaskPort> taskPorts = new ArrayList<>();
       tasks.forEach(task -> taskPorts.add(mapper.toDomainObj(task)));
       return taskPorts;
     }
-    var task = taskRepository.findByNameContaining(name);
-    if (Objects.nonNull(task)) {
-      return List.of(mapper.toDomainObj(task.get()));
-    }
-
-    return Collections.emptyList();
+    var tasks = taskRepository.findByNameContaining(name);
+    return tasks.stream()
+            .map(mapper::toDomainObj)
+            .collect(Collectors.toList());
   }
 
   @Override
   public TaskPort getById(Long id) {
     var task = taskRepository.findById(id);
-    String message = "";
     return mapper.toDomainObj(task.orElseThrow());
   }
 
@@ -96,17 +98,8 @@ public class TaskRepositoryGateway implements TaskGateway {
       tasks = taskRepository.findAllByCreatedAt(createdAt);
     }
 
-    for (int i = 0; i < tasks.size(); i++) {
-      Task task = tasks.get(i);
-      task.setActivityOrder((long) (i + 1));
-    }
-
-    taskRepository.saveAll(tasks);
-
-    String message = "";
-
     return tasks.stream()
-            .map(task -> mapper.toDomainObj(task))
+            .map(mapper::toDomainObj)
             .collect(Collectors.toList());
   }
 
@@ -115,22 +108,8 @@ public class TaskRepositoryGateway implements TaskGateway {
     Task task = taskRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("Task não encontrada"));
 
-    Boolean prioritized = task.getPrioritized();
-    LocalDateTime createdAt = task.getCreatedAt();
-
-// Buscar todas as tarefas prioritárias
-    List<TaskPort> prioritizedTasks = getTaskByPriority(prioritized, createdAt);
-
-    TaskPort mostPrioritizedTask = null;
-
-    // Encontrar a tarefa mais prioritária na lista
-    for (TaskPort taskPrioritized : prioritizedTasks) {
-      if (mostPrioritizedTask == null || taskPrioritized.activityOrder() < mostPrioritizedTask.activityOrder()) {
-        mostPrioritizedTask = taskPrioritized;
-      }
-    }
-    if (mostPrioritizedTask != null && task.getActivityOrder() < mostPrioritizedTask.activityOrder()) {
-      throw new IllegalArgumentException("Não é permitido concluir uma task com prioridade menor do que a mais prioritária no banco");
+    if (Boolean.TRUE.equals(task.getPrioritized())) {
+      throw new IllegalArgumentException("Não é permitido concluir uma task prioritária");
     }
 
     task.setRealized(true);

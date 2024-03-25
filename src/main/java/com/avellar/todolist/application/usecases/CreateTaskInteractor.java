@@ -9,7 +9,7 @@ public class CreateTaskInteractor {
 
   private final TaskGateway taskGateway;
 
-  public TaskPort createTask(TaskPort taskPort) {
-    return taskGateway.createTask(taskPort);
+  public TaskPort createTask(TaskPort taskPort, Boolean isPrioritized) {
+    return taskGateway.createTask(taskPort, isPrioritized);
   }
 }

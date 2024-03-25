@@ -29,8 +29,13 @@ public class TaskController {
   private final TaskDTOMapper mapper;
 
   @PostMapping
-  public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest request) {
-    var taskPort = createTaskUseCase.createTask(mapper.totaskPort(request));
+  public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest request, @RequestParam(required = false) Boolean isPrioritized) {
+    // Defina um valor padrão para isPrioritized se não for fornecido na solicitação
+    if (isPrioritized == null) {
+      isPrioritized = false; // ou true, dependendo da lógica desejada
+    }
+
+    var taskPort = createTaskUseCase.createTask(mapper.totaskPort(request), isPrioritized);
     return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponse(taskPort));
   }
 
