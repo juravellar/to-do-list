@@ -28,11 +28,25 @@ public class TaskController {
   private final CompleteTaskInteractor completeTask;
   private final TaskDTOMapper mapper;
 
+  @GetMapping("/priority")
+  public ResponseEntity<List<TaskResponse>> getTaskByPriority(
+          @RequestParam(required = false) Boolean prioritized,
+          @RequestParam(required = false) LocalDateTime createdAt) {
+
+    List<TaskPort> taskPortList = listTaskInteractor.getTaskByPriority(prioritized, createdAt);
+
+    List<TaskResponse> taskResponseList = taskPortList.stream()
+            .map(mapper::toResponse)
+            .collect(Collectors.toList());
+
+    return ResponseEntity.status(HttpStatus.OK).body(taskResponseList);
+  }
+
   @PostMapping
   public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest request, @RequestParam(required = false) Boolean isPrioritized) {
     // Defina um valor padrão para isPrioritized se não for fornecido na solicitação
     if (isPrioritized == null) {
-      isPrioritized = false; // ou true, dependendo da lógica desejada
+      isPrioritized = false;
     }
 
     var taskPort = createTaskUseCase.createTask(mapper.totaskPort(request), isPrioritized);
@@ -56,20 +70,6 @@ public class TaskController {
     var taskPort = listTaskInteractor.getByName(name);
     return ResponseEntity.status(HttpStatus.OK).body(
         taskPort.stream().map(mapper::toResponse).toList());
-  }
-
-  @GetMapping("/priority")
-  public ResponseEntity<List<TaskResponse>> getTaskByPriority(
-          @RequestParam(required = false) Boolean prioritized,
-          @RequestParam(required = false) LocalDateTime createdAt) {
-
-    List<TaskPort> taskPortList = listTaskInteractor.getTaskByPriority(prioritized, createdAt);
-
-    List<TaskResponse> taskResponseList = taskPortList.stream()
-            .map(mapper::toResponse)
-            .collect(Collectors.toList());
-
-    return ResponseEntity.status(HttpStatus.OK).body(taskResponseList);
   }
 
   @PatchMapping("/complete/{taskId}")
