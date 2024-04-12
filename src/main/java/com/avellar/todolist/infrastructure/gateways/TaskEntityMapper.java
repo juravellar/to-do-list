@@ -2,8 +2,6 @@ package com.avellar.todolist.infrastructure.gateways;
 
 
 import com.avellar.todolist.domain.entity.TaskPort;
-import com.avellar.todolist.infrastructure.controller.dto.TaskDTOMapper;
-import com.avellar.todolist.infrastructure.controller.dto.TaskRequest;
 import com.avellar.todolist.infrastructure.persistence.Task;
 import java.time.LocalDateTime;
 import java.util.Objects;
