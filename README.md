@@ -88,9 +88,9 @@ Swagger UI: [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.ht
 docker run --name place-service -p 8080:8080  -d place-service:0.0.1-SNAPSHOT
 ```
 
-####Acesse a API e o Swagger UI usando os mesmos endereços mencionados acima.
+#### Acesse a API e o Swagger UI usando os mesmos endereços mencionados acima.
 
-###Próximos passos (opcional)
+### Próximos passos (opcional)
 -Implementar autenticação e autorização.
 -Adicionar testes unitários e de integração.
 -Criar uma interface de usuário (front-end).
@@ -99,7 +99,7 @@ docker run --name place-service -p 8080:8080  -d place-service:0.0.1-SNAPSHOT
 -Permitir a organização de tarefas em listas ou categorias.
 -Implementar a colaboração em tarefas, permitindo que vários usuários trabalhem juntos.
 
-###Contribuição
+### Contribuição
 Sinta-se à vontade para contribuir com este projeto! Fique à vontade para abrir issues e pull requests.
 **Observações:**
 
