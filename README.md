@@ -1,110 +1,94 @@
- 
-<h1 align="center">
-  To do List 📝
-</h1>
+# To-do List API 📝
 
-<p align="center">
- <img src="https://img.shields.io/static/v1?label=GitHub&message=@juravellar&color=66cdaa&labelColor=006400" alt="@juravellar" />
- <img src="https://img.shields.io/static/v1?label=Tipo&message=Desafio&color=66cdaa&labelColor=006400" alt="Desafio" />
- <img src="https://img.shields.io/static/v1?label=Status&message=Em%20desenvolvimento&color=yellow&labelColor=006400" alt="Status">
-</p>
+API REST para gerenciar tarefas, construída com **Spring Boot** seguindo os princípios da **Clean Architecture**: as regras de negócio ficam isoladas em casos de uso e não dependem do framework nem do banco de dados.
 
-# Sobre o projeto
+## Funcionalidades
 
-Este projeto é uma API RESTful que permite a você gerenciar suas tarefas de forma eficiente. Ele implementa as operações CRUD (Criar, Ler, Atualizar e Deletar) para tarefas, permitindo que você adicione, visualize, edite e exclua tarefas conforme necessário.
+- Criar tarefas, com opção de marcá-las como prioritárias
+- Editar nome e descrição
+- Marcar uma tarefa como concluída
+- Buscar por id, por nome ou listar as tarefas prioritárias
+- Registro automático das datas de criação e de atualização
 
-# Tecnologias utilizadas
+## Tecnologias
 
-- **Backend:**
-    - Java 17
-    - Spring Boot
-    - Spring Webflux (para reatividade)
-    - Spring Data R2DBC (para acesso ao banco de dados reativo)
-    - SpringDoc OpenAPI 3 (para documentação da API)
-    - Slugify (para geração de slugs)
-- **Banco de dados:** (escolha um)
-    - PostgreSQL 
-    - MySQL
-    - H2 (para desenvolvimento)
+- **Java 17** e **Spring Boot** (Spring Web e Spring Data JPA)
+- **MySQL**
+- **Lombok**
+- **JUnit** e **Mockito** para os testes
+- **Maven**
 
-# Funcionalidades
+## Arquitetura
 
-- **CRUD de tarefas:** Adicione, visualize, edite e exclua tarefas.
-- **Filtros dinâmicos:** Pesquise tarefas com base em diferentes critérios.
-- **API reativa:** Desfrute de melhor desempenho e escalabilidade.
-- **DTOs:** Mantenha a separação de responsabilidades entre camadas.
-- **Injeção de dependências:** Facilite a testabilidade e a manutenção.
-- **Swagger UI:** Documentação da API interativa e fácil de usar.
-- **Geração de slugs:** URLs amigáveis para suas tarefas.
-- **Auditoria:** Acompanhe as alterações feitas nas tarefas.
-
-### Como Executar
-
-## Pré-requisitos
-
-- Java Development Kit (JDK) 17
-- Maven
-- Docker (opcional)
-
-#### Localmente
-- Clonar repositório git
-  ```bash
-  git clone https://github.com/seu-usuario/to-do-list.git
-
- - Navegue até o diretório do projeto:
 ```
+com.avellar.todolist
+├── domain/entity          # TaskPort: o modelo de tarefa, sem dependência de framework
+├── application
+│   ├── gateways           # TaskGateway: interface que os casos de uso usam para persistir
+│   └── usecases           # CreateTask, EditTask, CompleteTask e ListTask (interactors)
+├── infrastructure
+│   ├── controller         # TaskController e DTOs de entrada e saída
+│   ├── gateways           # TaskRepositoryGateway: implementação do gateway com JPA
+│   └── persistence        # entidade JPA Task e TaskRepository
+└── main                   # TaskConfig: liga os casos de uso às implementações
+```
+
+A camada `application` define o que o sistema faz e a `infrastructure` define como (HTTP, JPA, MySQL). Trocar o banco ou o framework web não exige mudar os casos de uso.
+
+## Endpoints
+
+| Método | Rota | O que faz |
+| --- | --- | --- |
+| POST | `/tasks?isPrioritized=true` | Cria uma tarefa (o parâmetro é opcional) |
+| GET | `/tasks/{id}` | Busca uma tarefa pelo id |
+| GET | `/tasks/find?name=` | Busca tarefas pelo nome |
+| GET | `/tasks/priority` | Lista as tarefas prioritárias |
+| PATCH | `/tasks/{id}` | Edita uma tarefa |
+| PATCH | `/tasks/complete/{taskId}` | Marca uma tarefa como concluída |
+
+Exemplo de criação:
+
+```bash
+curl -X POST "http://localhost:8080/tasks?isPrioritized=true" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Estudar Spring", "description": "Revisar Clean Architecture"}'
+```
+
+## Como rodar
+
+### Requisitos
+
+- JDK 17
+- MySQL 8
+
+### Passos
+
+```bash
+git clone https://github.com/juravellar/to-do-list.git
 cd to-do-list
 ```
-- Construir o projeto:
-```
-./mvnw clean package
-```
-Compile e execute o projeto:
-```
+
+Crie um banco chamado `task` no MySQL e informe as credenciais por variáveis de ambiente, sem colocá-las no código:
+
+```bash
+export SPRING_DATASOURCE_USERNAME=seu_usuario
+export SPRING_DATASOURCE_PASSWORD=sua_senha
 ./mvnw spring-boot:run
 ```
-- Executar:
-```
-java -jar to-do-list/target/to-do-list-0.0.1-SNAPSHOT.jar
-```
 
-Acesse a API e o Swagger UI:
-API: [localhost:8080](http://localhost:8080).
-Swagger UI: [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+A API sobe em `http://localhost:8080`.
 
-#### Executando com Docker
+## Testes
 
-- Clonar repositório git
-- Construir o projeto:
-```
-./mvnw clean package
-```
-- Construir a imagem:
-```
-./mvnw spring-boot:build-image
-```
-- Executar o container:
-```
-docker run --name place-service -p 8080:8080  -d place-service:0.0.1-SNAPSHOT
+```bash
+./mvnw test
 ```
 
-#### Acesse a API e o Swagger UI usando os mesmos endereços mencionados acima.
+Há testes do controller e do gateway de persistência.
 
-### Próximos passos (opcional)
--Implementar autenticação e autorização.
--Adicionar testes unitários e de integração.
--Criar uma interface de usuário (front-end).
--Implantar em um ambiente de produção.
--Adicionar um sistema de lembretes para as tarefas.
--Permitir a organização de tarefas em listas ou categorias.
--Implementar a colaboração em tarefas, permitindo que vários usuários trabalhem juntos.
+## Próximos passos
 
-### Contribuição
-Sinta-se à vontade para contribuir com este projeto! Fique à vontade para abrir issues e pull requests.
-**Observações:**
-
-- Substitua `seu-usuario` pelo seu nome de usuário do GitHub.
-- Escolha o banco de dados que deseja usar e configure-o adequadamente. 
-- Adapte a seção "Próximos passos" de acordo com suas necessidades e objetivos. 
-
-**Espero que este READ.me aprimorado seja útil para o seu projeto!**
+- [ ] Documentação interativa com SpringDoc OpenAPI (Swagger)
+- [ ] Testes dos casos de uso
+- [ ] Docker Compose com a API e o MySQL
+- [ ] CI no GitHub Actions
