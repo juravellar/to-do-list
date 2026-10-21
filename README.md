@@ -68,15 +68,32 @@ git clone https://github.com/juravellar/to-do-list.git
 cd to-do-list
 ```
 
-Crie um banco chamado `task` no MySQL e informe as credenciais por variáveis de ambiente, sem colocá-las no código:
+Crie um banco chamado `task` no MySQL.
+
+As credenciais do banco ficam num arquivo `.env`, que não vai para o repositório. Copie o modelo e preencha com os seus dados:
 
 ```bash
-export SPRING_DATASOURCE_USERNAME=seu_usuario
-export SPRING_DATASOURCE_PASSWORD=sua_senha
+cp .env.example .env
+```
+
+```properties
+# .env
+DB_URL=jdbc:mysql://localhost:3306/task
+DB_USERNAME=seu_usuario
+DB_PASSWORD=sua_senha
+```
+
+O `application.properties` lê esse arquivo com `spring.config.import=optional:file:.env[.properties]` e usa os valores em `${DB_URL}`, `${DB_USERNAME}` e `${DB_PASSWORD}`. Se preferir, você também pode definir essas três variáveis direto no ambiente, sem o arquivo.
+
+Depois, rode a partir da raiz do projeto:
+
+```bash
 ./mvnw spring-boot:run
 ```
 
 A API sobe em `http://localhost:8080`.
+
+> No IntelliJ, confira se o "Working directory" da configuração de execução é a pasta do projeto, para o `.env` ser encontrado.
 
 ## Testes
 
